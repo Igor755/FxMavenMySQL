@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="954.0" prefWidth="500.0" style="-fx-background-color: #66CDAA;">
+            <children>
+                <TextField layoutX="14.0" layoutY="25.0" />
+                <Label layoutX="173.0" layoutY="29.0" prefHeight="17.0" prefWidth="52.0" text="Name" />
+                <TextField layoutX="14.0" layoutY="55.0" />
+                <TextField layoutX="14.0" layoutY="88.0" />
+                <TextField layoutX="14.0" layoutY="121.0" />
+                <Label layoutX="173.0" layoutY="59.0" prefHeight="17.0" prefWidth="68.0" text="Last_Name" />
+                <Label layoutX="173.0" layoutY="92.0" prefHeight="17.0" prefWidth="79.0" text="Middle_Name" />
+                <Label layoutX="173.0" layoutY="125.0" prefHeight="17.0" prefWidth="79.0" text="Date_Birth" />
+                <TextArea fx:id="textArea" layoutX="21.0" layoutY="698.0" prefHeight="200.0" prefWidth="200.0" />
+                <Label layoutX="21.0" layoutY="673.0" text="LOGS" />
+                <Button layoutX="339.0" layoutY="76.0" mnemonicParsing="false" text="ADD" />
+            <Button fx:id="button_connect" layoutX="291.0" layoutY="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Connection_DB" />
+            </children>
+        </AnchorPane>
+        <TableView layoutX="528.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="969.0" prefWidth="454.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="528.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="13.0">
+            <columns>
+                <TableColumn prefWidth="75.0" text="id" />
+                <TableColumn prefWidth="75.0" text="First_Name" />
+                <TableColumn prefWidth="75.0" text="Last_Name" />
+                <TableColumn prefWidth="97.0" text="Middle_Name" />
+                <TableColumn prefWidth="75.0" text="Date of Birth" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>
