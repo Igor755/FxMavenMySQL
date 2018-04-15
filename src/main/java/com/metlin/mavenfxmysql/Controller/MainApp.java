@@ -8,17 +8,17 @@ import javafx.stage.Stage;
 
 public class MainApp extends Application {
 
-    public static void main(String[] args) throws Exception {
-        launch(args);
-    }
+
 
     @Override
     public void start(Stage stage) throws Exception {
-        String fxmlFile = "/fxml/fxsql.fxml";
-        FXMLLoader loader = new FXMLLoader();
-        Parent root = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
-        stage.setTitle("Java_maven_fx_mysql");
-        stage.setScene(new Scene(root));
+
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/fxsql.fxml"));
+        stage.setTitle("Hello World");
+        stage.setScene(new Scene(root, stage.getWidth(), stage.getHeight()));
         stage.show();
+    }
+    public static void main(String[] args)  {
+        launch(args);
     }
 }
