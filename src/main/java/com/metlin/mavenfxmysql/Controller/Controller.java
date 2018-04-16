@@ -3,8 +3,10 @@ package com.metlin.mavenfxmysql.Controller;
 
 import com.metlin.mavenfxmysql.People.User;
 import com.metlin.mavenfxmysql.util.DBUtil;
+import com.mysql.jdbc.Connection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,8 +14,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
+import javax.swing.*;
 import java.net.URL;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -26,6 +31,10 @@ public class Controller implements Initializable {
 
     @FXML
     private Button add;
+
+    @FXML
+    private Button load;
+
 
     @FXML
     private TextArea textArea;
@@ -45,8 +54,9 @@ public class Controller implements Initializable {
     @FXML
     private TableView<User> tableUsers;
 
+
     @FXML
-    private TableColumn<User, Integer> idColumn;
+    private TableColumn<User, String> idColumn;
 
     @FXML
     private TableColumn<User, String> nameColumn;
@@ -60,29 +70,41 @@ public class Controller implements Initializable {
     @FXML
     private TableColumn<User, Date> DateColumn;
 
-    private ObservableList<User> data;
-    private DBUtil dbUtil;
+
+
+    ObservableList<User> user = FXCollections.observableArrayList();
+
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // textArea.setText(DBUtil.DBUtil(p));
 
-        idColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("id"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("name"));
-        lastColumn.setCellValueFactory(new PropertyValueFactory<User, String>("lastname"));
-        middleColumn.setCellValueFactory(new PropertyValueFactory<User, String>("middlename"));
-        DateColumn.setCellValueFactory(new PropertyValueFactory<User, Date>("date"));
+        try {
+            Connection connection = (Connection) DBUtil.getConnection();
+            ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM people.warrior");
 
+            while (resultSet.next()) {
+                user.add(new User(resultSet.getString("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("last"),
+                        resultSet.getString("middle"),
+                        resultSet.getString("birth")));
 
-        add.setOnAction(event -> {
-            //usersData.add(new User(2,"tyty","ytyty","tytyty"));
+            }
+        } catch (SQLException e) {
+            System.out.println("DON'T LOAD DATA");
+        }
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        lastColumn.setCellValueFactory(new PropertyValueFactory<>("last"));
+        middleColumn.setCellValueFactory(new PropertyValueFactory<>("middle"));
+        DateColumn.setCellValueFactory(new PropertyValueFactory<>("birth"));
 
-            //tableUsers.setItems(usersData);
+        tableUsers.setItems(user);
 
-
-        });
     }
 
+
 }
+

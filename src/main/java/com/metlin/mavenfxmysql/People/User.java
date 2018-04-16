@@ -4,13 +4,13 @@ import java.util.Date;
 
 public class User {
 
-    private int id;
+    private String id;
     private String name;
     private String last;
     private String middle;
-    private Date birth;
+    private String birth;
 
-    public User(int id, String name, String last, String middle, Date birth) {
+    public User(String id, String name, String last, String middle, String birth) {
         this.id = id;
         this.name = name;
         this.last = last;
@@ -19,11 +19,11 @@ public class User {
     }
 
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -51,11 +51,11 @@ public class User {
         this.middle = middle;
     }
 
-    public Date getBirth() {
+    public String getBirth() {
         return birth;
     }
 
-    public void setBirth(Date birth) {
+    public void setBirth(String birth) {
         this.birth = birth;
     }
 

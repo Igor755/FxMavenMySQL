@@ -14,7 +14,7 @@ public class MainApp extends Application {
     public void start(Stage stage) throws Exception {
 
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/fxsql.fxml"));
-        stage.setTitle("Hello World");
+        stage.setTitle("PEOPLE APPLICATION");
         stage.setScene(new Scene(root, stage.getWidth(), stage.getHeight()));
         stage.show();
     }

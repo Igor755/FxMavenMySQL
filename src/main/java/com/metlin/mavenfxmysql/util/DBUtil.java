@@ -1,22 +1,27 @@
 package com.metlin.mavenfxmysql.util;
 
-import com.mysql.fabric.jdbc.FabricMySQLDriver;
-
 import java.sql.*;
 
 public class DBUtil {
 
-    public static final String USER = "root";
-    public static final String PASSWORD = "root";
-    public static final String URL = "jdbc:mysql://localhost:3306/mysql?useSSL=false";
 
 
-
-    public Connection connection;
-    public Driver driver;
-    public String s;
+    public static Connection getConnection() throws SQLException {
 
 
+            String USER = "root";
+            String PASSWORD = "root";
+            String URL = "jdbc:mysql://localhost:3306/mysql?useSSL=false";
+            //Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(URL,USER,PASSWORD);
+            return connection;
+
+    }
+}
+//public Driver driver;
+// public String s;
+
+/*
     public String getConnection() {
 
         try {
