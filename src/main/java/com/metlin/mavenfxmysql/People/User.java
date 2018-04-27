@@ -4,26 +4,31 @@ import java.util.Date;
 
 public class User {
 
-    private String id;
+    private int id;
     private String name;
     private String last;
     private String middle;
     private String birth;
 
-    public User(String id, String name, String last, String middle, String birth) {
+
+
+    public User(int id, String name, String last, String middle, String birth) {
         this.id = id;
         this.name = name;
         this.last = last;
         this.middle = middle;
         this.birth = birth;
     }
+    public User(){
+
+    }
 
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

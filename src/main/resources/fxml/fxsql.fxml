@@ -22,14 +22,15 @@
                 <Label layoutX="173.0" layoutY="125.0" prefHeight="17.0" prefWidth="79.0" text="Date_Birth" />
                 <TextArea id="textArea" fx:id="textArea" layoutX="21.0" layoutY="698.0" prefHeight="200.0" prefWidth="200.0" />
                 <Label layoutX="21.0" layoutY="673.0" text="LOGS" />
+
                 <Button fx:id="add" layoutX="339.0" layoutY="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="ADD" />
             <Button id="update" fx:id="update" layoutX="339.0" layoutY="68.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="Update" />
-            <Button id="Delete" fx:id="delete" layoutX="339.0" layoutY="113.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="Delete" />
+            <Button id="delete" fx:id="delete" layoutX="339.0" layoutY="113.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="Delete" />
+
             <DatePicker fx:id="date_birth" layoutX="14.0" layoutY="121.0" prefHeight="25.0" prefWidth="149.0" />
-            <Button fx:id="load" layoutX="308.0" layoutY="164.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="141.0" text="Load_DATA_with_DB" />
             </children>
         </AnchorPane>
-        <TableView layoutX="528.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="983.0" prefWidth="454.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="528.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="13.0">
+        <TableView fx:id="tableUsers" layoutX="528.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="983.0" prefWidth="454.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="528.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="13.0">
             <columns>
                 <TableColumn fx:id="idColumn" prefWidth="75.0" text="id" />
                 <TableColumn fx:id="nameColumn" prefWidth="75.0" text="First_Name" />

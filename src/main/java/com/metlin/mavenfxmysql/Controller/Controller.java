@@ -27,13 +27,18 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
 
-    public String p = "";
+
 
     @FXML
     private Button add;
 
     @FXML
-    private Button load;
+    private Button update;
+
+    @FXML
+    private Button delete;
+
+
 
 
     @FXML
@@ -51,12 +56,21 @@ public class Controller implements Initializable {
     @FXML
     private DatePicker date_birth;
 
+
+
+
+
+
     @FXML
     private TableView<User> tableUsers;
 
 
+
+
+
+
     @FXML
-    private TableColumn<User, String> idColumn;
+    private TableColumn<User, Integer> idColumn;
 
     @FXML
     private TableColumn<User, String> nameColumn;
@@ -68,42 +82,52 @@ public class Controller implements Initializable {
     private TableColumn<User, String> middleColumn;
 
     @FXML
-    private TableColumn<User, Date> DateColumn;
+    private TableColumn<User, String> DateColumn;
 
 
 
-    ObservableList<User> user = FXCollections.observableArrayList();
+    private ObservableList<User> usersData = FXCollections.observableArrayList();
 
 
 
-    @Override
+
+
+    @FXML
     public void initialize(URL location, ResourceBundle resources) {
 
-
         try {
+
+
             Connection connection = (Connection) DBUtil.getConnection();
             ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM people.warrior");
 
             while (resultSet.next()) {
-                user.add(new User(resultSet.getString("id"),
+
+
+                usersData.add(new User(resultSet.getInt("id"),
                         resultSet.getString("name"),
                         resultSet.getString("last"),
                         resultSet.getString("middle"),
                         resultSet.getString("birth")));
-
             }
+
+
+
         } catch (SQLException e) {
             System.out.println("DON'T LOAD DATA");
         }
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        lastColumn.setCellValueFactory(new PropertyValueFactory<>("last"));
-        middleColumn.setCellValueFactory(new PropertyValueFactory<>("middle"));
-        DateColumn.setCellValueFactory(new PropertyValueFactory<>("birth"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<User,Integer>("id"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<User,String >("name"));
+        lastColumn.setCellValueFactory(new PropertyValueFactory<User,String>("last"));
+        middleColumn.setCellValueFactory(new PropertyValueFactory<User,String>("middle"));
+        DateColumn.setCellValueFactory(new PropertyValueFactory<User,String>("birth"));
 
-        tableUsers.setItems(user);
+        tableUsers.setItems(usersData);
 
     }
+
+
+
 
 
 }
