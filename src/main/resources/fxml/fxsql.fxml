@@ -23,7 +23,7 @@
                 <TextArea id="textArea" fx:id="textArea" layoutX="21.0" layoutY="698.0" prefHeight="200.0" prefWidth="200.0" />
                 <Label layoutX="21.0" layoutY="673.0" text="LOGS" />
 
-                <Button fx:id="add" layoutX="339.0" layoutY="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="ADD" />
+                <Button fx:id="add" layoutX="339.0" layoutY="25.0" mnemonicParsing="false" onAction="#addUser" prefHeight="25.0" prefWidth="79.0" text="ADD" />
             <Button id="update" fx:id="update" layoutX="339.0" layoutY="68.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="Update" />
             <Button id="delete" fx:id="delete" layoutX="339.0" layoutY="113.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="Delete" />
 

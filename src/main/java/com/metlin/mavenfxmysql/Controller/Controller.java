@@ -115,6 +115,7 @@ public class Controller implements Initializable {
 
         } catch (SQLException e) {
             System.out.println("DON'T LOAD DATA");
+            textArea.setText("DON'T LOAD DATA");
         }
         idColumn.setCellValueFactory(new PropertyValueFactory<User,Integer>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<User,String >("name"));
@@ -126,6 +127,17 @@ public class Controller implements Initializable {
 
     }
 
+    @FXML
+    public  void addUser(ActionEvent event){
+
+        String sql = "Inesrt into people.warrior (id,name,last,middle,birth) Values (?,?,?,?,?)";
+        String name = first_name.getText();
+        String last = last_name.getText();
+        String middle = middle_name.getText();
+        LocalDate birth = date_birth.getValue();
+
+
+    }
 
 
 
