@@ -87,6 +87,9 @@ public class Controller implements Initializable {
 
 
     private ObservableList<User> usersData = FXCollections.observableArrayList();
+    PreparedStatement preparedStatement = null;
+
+
 
 
 
@@ -123,21 +126,38 @@ public class Controller implements Initializable {
         middleColumn.setCellValueFactory(new PropertyValueFactory<User,String>("middle"));
         DateColumn.setCellValueFactory(new PropertyValueFactory<User,String>("birth"));
 
+        textArea.setText("LOAD BASE Succsesfully");
+
         tableUsers.setItems(usersData);
 
     }
 
     @FXML
-    public  void addUser(ActionEvent event){
+    public  void addUser(ActionEvent event) throws SQLException {
 
         String sql = "Inesrt into people.warrior (id,name,last,middle,birth) Values (?,?,?,?,?)";
+
         String name = first_name.getText();
         String last = last_name.getText();
         String middle = middle_name.getText();
         LocalDate birth = date_birth.getValue();
+        try {
 
 
-    }
+            Connection connection = (Connection) DBUtil.getConnection();
+            ResultSet resultSet = connection.createStatement().executeQuery("Inesrt into people.warrior (id,name,last,middle,birth) Values (?,?,?,?,?)");
+            preparedStatement.setString(2,name);
+            preparedStatement.setString(3,last);
+            preparedStatement.setString(4,middle);
+            preparedStatement.setString(5, String.valueOf(birth));
+
+        }catch (SQLException e){
+            textArea.setText("DON'T ADD USER");
+
+        }
+
+
+        }
 
 
 
