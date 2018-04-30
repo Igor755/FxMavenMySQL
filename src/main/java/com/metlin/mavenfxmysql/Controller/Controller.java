@@ -107,8 +107,7 @@ public class Controller implements Initializable {
             while (resultSet.next()) {
 
 
-                usersData.add(new User(resultSet.getInt("id"),
-                        resultSet.getString("name"),
+                usersData.add(new User(resultSet.getString("name"),
                         resultSet.getString("last"),
                         resultSet.getString("middle"),
                         resultSet.getString("birth")));
@@ -120,7 +119,7 @@ public class Controller implements Initializable {
             System.out.println("DON'T LOAD DATA");
             textArea.setText("DON'T LOAD DATA");
         }
-        idColumn.setCellValueFactory(new PropertyValueFactory<User,Integer>("id"));
+
         nameColumn.setCellValueFactory(new PropertyValueFactory<User,String >("name"));
         lastColumn.setCellValueFactory(new PropertyValueFactory<User,String>("last"));
         middleColumn.setCellValueFactory(new PropertyValueFactory<User,String>("middle"));
@@ -135,25 +134,46 @@ public class Controller implements Initializable {
     @FXML
     public  void addUser(ActionEvent event) throws SQLException {
 
-        String sql = "Inesrt into people.warrior (id,name,last,middle,birth) Values (?,?,?,?,?)";
+        String sql = "INSERT into people.warrior (name,last,middle,birth) Values (?,?,?,?)";
 
         String name = first_name.getText();
         String last = last_name.getText();
         String middle = middle_name.getText();
         LocalDate birth = date_birth.getValue();
+        preparedStatement = null;
+
         try {
 
 
             Connection connection = (Connection) DBUtil.getConnection();
-            ResultSet resultSet = connection.createStatement().executeQuery("Inesrt into people.warrior (id,name,last,middle,birth) Values (?,?,?,?,?)");
-            preparedStatement.setString(2,name);
-            preparedStatement.setString(3,last);
-            preparedStatement.setString(4,middle);
-            preparedStatement.setString(5, String.valueOf(birth));
+            //ResultSet resultSet = connection.createStatement().executeUpdate(sql);
+            preparedStatement = connection.prepareStatement(sql);
+            //preparedStatement.executeUpdate(sql);
+
+
+
+            //usersData.add(new User(resultSet.getInt("id"),
+                  //  resultSet.getString(name),
+                  //  resultSet.getString(last),
+                  //  resultSet.getString(middle),
+                   // resultSet.getString(String.valueOf(birth))));
+
+
+            preparedStatement.setString(1,name);
+            preparedStatement.setString(2,last);
+            preparedStatement.setString(3,middle);
+            preparedStatement.setString(4, String.valueOf(birth));
+
+            textArea.setText("User Added");
 
         }catch (SQLException e){
-            textArea.setText("DON'T ADD USER");
+            textArea.setText(String.valueOf(e));
+            System.out.println(e);
 
+        }
+        finally {
+            preparedStatement.execute();
+            preparedStatement.close();
         }
 
 

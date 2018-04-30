@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class User {
 
-    private int id;
+
     private String name;
     private String last;
     private String middle;
@@ -12,8 +12,8 @@ public class User {
 
 
 
-    public User(int id, String name, String last, String middle, String birth) {
-        this.id = id;
+    public User( String name, String last, String middle, String birth) {
+
         this.name = name;
         this.last = last;
         this.middle = middle;
@@ -24,13 +24,6 @@ public class User {
     }
 
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
