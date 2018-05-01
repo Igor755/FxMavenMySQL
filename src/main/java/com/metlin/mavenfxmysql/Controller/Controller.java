@@ -27,8 +27,6 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
 
-
-
     @FXML
     private Button add;
 
@@ -37,8 +35,6 @@ public class Controller implements Initializable {
 
     @FXML
     private Button delete;
-
-
 
 
     @FXML
@@ -57,16 +53,8 @@ public class Controller implements Initializable {
     private DatePicker date_birth;
 
 
-
-
-
-
     @FXML
     private TableView<User> tableUsers;
-
-
-
-
 
 
     @FXML
@@ -85,20 +73,34 @@ public class Controller implements Initializable {
     private TableColumn<User, String> DateColumn;
 
 
-
     private ObservableList<User> usersData = FXCollections.observableArrayList();
     PreparedStatement preparedStatement = null;
-
-
-
-
-
 
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
 
+
+        nameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("name"));
+        lastColumn.setCellValueFactory(new PropertyValueFactory<User, String>("last"));
+        middleColumn.setCellValueFactory(new PropertyValueFactory<User, String>("middle"));
+        DateColumn.setCellValueFactory(new PropertyValueFactory<User, String>("birth"));
+        loaddate();
+
+
+    }
+
+    public void loaddate() {
+
         try {
+
+            first_name.clear();
+            last_name.clear();
+            middle_name.clear();
+            date_birth.getEditor().clear();
+
+
+            usersData.clear();
 
 
             Connection connection = (Connection) DBUtil.getConnection();
@@ -114,25 +116,19 @@ public class Controller implements Initializable {
             }
 
 
-
         } catch (SQLException e) {
             System.out.println("DON'T LOAD DATA");
             textArea.setText("DON'T LOAD DATA");
         }
-
-        nameColumn.setCellValueFactory(new PropertyValueFactory<User,String >("name"));
-        lastColumn.setCellValueFactory(new PropertyValueFactory<User,String>("last"));
-        middleColumn.setCellValueFactory(new PropertyValueFactory<User,String>("middle"));
-        DateColumn.setCellValueFactory(new PropertyValueFactory<User,String>("birth"));
-
         textArea.setText("LOAD BASE Succsesfully");
 
         tableUsers.setItems(usersData);
 
+
     }
 
     @FXML
-    public  void addUser(ActionEvent event) throws SQLException {
+    public void addUser(ActionEvent event) throws SQLException {
 
         String sql = "INSERT into people.warrior (name,last,middle,birth) Values (?,?,?,?)";
 
@@ -144,42 +140,79 @@ public class Controller implements Initializable {
 
         try {
 
-
             Connection connection = (Connection) DBUtil.getConnection();
-            //ResultSet resultSet = connection.createStatement().executeUpdate(sql);
             preparedStatement = connection.prepareStatement(sql);
-            //preparedStatement.executeUpdate(sql);
 
-
-
-            //usersData.add(new User(resultSet.getInt("id"),
-                  //  resultSet.getString(name),
-                  //  resultSet.getString(last),
-                  //  resultSet.getString(middle),
-                   // resultSet.getString(String.valueOf(birth))));
-
-
-            preparedStatement.setString(1,name);
-            preparedStatement.setString(2,last);
-            preparedStatement.setString(3,middle);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, last);
+            preparedStatement.setString(3, middle);
             preparedStatement.setString(4, String.valueOf(birth));
 
             textArea.setText("User Added");
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             textArea.setText(String.valueOf(e));
             System.out.println(e);
 
-        }
-        finally {
+        } finally {
             preparedStatement.execute();
             preparedStatement.close();
         }
 
+        loaddate();
+
+
+    }
+
+    @FXML
+    public void showOnClick(){
+
+        try{
+            User user = (User)tableUsers.getSelectionModel().getSelectedItem();
+            String sql = "select * from people.warrior";
+            Connection connection = (Connection) DBUtil.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+
+            first_name.setText(user.getName());
+            last_name.setText(user.getLast());
+            middle_name.setText(user.getMiddle());
+            date_birth.setValue(LocalDate.parse(user.getBirth()));
+
+            preparedStatement.close();
+
 
         }
+        catch (SQLException e)
+        {
+            System.out.println(e);
+            textArea.setText(String.valueOf(e));
+        }
+    }
+    @FXML
+    public void deleteUser(){
+
+        try{
+            User user = (User)tableUsers.getSelectionModel().getSelectedItem();
+            String sql = "delete * from people.warrior where first_name=?";
+            Connection connection = (Connection) DBUtil.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,user.getName());
+            preparedStatement.executeUpdate();
 
 
+
+            preparedStatement.close();
+
+
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e);
+            textArea.setText(String.valueOf(e));
+        }
+        loaddate();
+
+    }
 
 
 }

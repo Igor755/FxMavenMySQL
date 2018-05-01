@@ -30,7 +30,7 @@
             <DatePicker fx:id="date_birth" layoutX="14.0" layoutY="121.0" prefHeight="25.0" prefWidth="149.0" />
             </children>
         </AnchorPane>
-        <TableView fx:id="tableUsers" layoutX="528.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="983.0" prefWidth="454.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="528.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="13.0">
+        <TableView fx:id="tableUsers" layoutX="528.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showOnClick" prefHeight="983.0" prefWidth="454.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="528.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="13.0">
             <columns>
                 <TableColumn fx:id="nameColumn" prefWidth="75.0" text="First_Name" />
                 <TableColumn fx:id="lastColumn" prefWidth="75.0" text="Last_Name" />

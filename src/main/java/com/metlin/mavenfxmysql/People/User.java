@@ -1,6 +1,6 @@
 package com.metlin.mavenfxmysql.People;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class User {
 
