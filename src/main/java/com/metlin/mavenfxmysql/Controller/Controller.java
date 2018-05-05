@@ -86,6 +86,7 @@ public class Controller implements Initializable {
         middleColumn.setCellValueFactory(new PropertyValueFactory<User, String>("middle"));
         DateColumn.setCellValueFactory(new PropertyValueFactory<User, String>("birth"));
         loaddate();
+        textArea.setText("LOAD BASE Succsesfully");
 
 
     }
@@ -120,7 +121,6 @@ public class Controller implements Initializable {
             System.out.println("DON'T LOAD DATA");
             textArea.setText("DON'T LOAD DATA");
         }
-        textArea.setText("LOAD BASE Succsesfully");
 
         tableUsers.setItems(usersData);
 
@@ -128,15 +128,23 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void addUser(ActionEvent event) throws SQLException {
+    public void addUser() throws SQLException {
 
-        String sql = "INSERT into people.warrior (name,last,middle,birth) Values (?,?,?,?)";
 
         String name = first_name.getText();
         String last = last_name.getText();
         String middle = middle_name.getText();
         LocalDate birth = date_birth.getValue();
+
+        String sql = "INSERT into people.warrior (name,last,middle,birth) Values (?,?,?,?)";
+
         preparedStatement = null;
+/*
+        if ((name == "") | (last == "") | (last == "")) {
+
+            textArea.setText("PLEASE FILL FIELDS ");
+
+        } else {*/
 
         try {
 
@@ -164,53 +172,74 @@ public class Controller implements Initializable {
 
     }
 
-    @FXML
-    public void showOnClick(){
+    static String tempUsername;
 
-        try{
-            User user = (User)tableUsers.getSelectionModel().getSelectedItem();
+    @FXML
+    public void showOnClick() {
+
+        try {
+            User user = (User) tableUsers.getSelectionModel().getSelectedItem();
             String sql = "select * from people.warrior";
             Connection connection = (Connection) DBUtil.getConnection();
             preparedStatement = connection.prepareStatement(sql);
-
+            tempUsername = user.getName();
             first_name.setText(user.getName());
             last_name.setText(user.getLast());
             middle_name.setText(user.getMiddle());
             date_birth.setValue(LocalDate.parse(user.getBirth()));
+            textArea.setText("You select" + " " + user.getName());
 
             preparedStatement.close();
 
 
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             System.out.println(e);
             textArea.setText(String.valueOf(e));
         }
     }
-    @FXML
-    public void deleteUser(){
 
-        try{
-            User user = (User)tableUsers.getSelectionModel().getSelectedItem();
-            String sql = "delete * from people.warrior where first_name=?";
+    @FXML
+    public void deleteUser() {
+
+        try {
+            User user = (User) tableUsers.getSelectionModel().getSelectedItem();
+            String sql = "delete from people.warrior where name=?";
             Connection connection = (Connection) DBUtil.getConnection();
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1,user.getName());
+            preparedStatement.setString(1, user.getName());
             preparedStatement.executeUpdate();
-
+            textArea.setText("User was deleted");
 
 
             preparedStatement.close();
 
 
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             System.out.println(e);
             textArea.setText(String.valueOf(e));
         }
         loaddate();
+
+    }
+
+    @FXML
+    public void UpdateUser() {
+        String sql = "update people.warrior set name=?, last=?, middle=?, birth=? where name='" + tempUsername + "'";
+
+        try {
+            Connection connection = (Connection) DBUtil.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, first_name.getText());
+            preparedStatement.setString(2, last_name.getText());
+            preparedStatement.setString(3, middle_name.getText());
+            preparedStatement.setString(4, String.valueOf(date_birth.getValue()));
+            preparedStatement.execute();
+            preparedStatement.close();
+            loaddate();
+            textArea.setText("User" + " " + first_name.getText() + " " + "update");
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
 
     }
 

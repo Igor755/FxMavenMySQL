@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -20,17 +22,21 @@
                 <Label layoutX="173.0" layoutY="59.0" prefHeight="17.0" prefWidth="68.0" text="Last_Name" />
                 <Label layoutX="173.0" layoutY="92.0" prefHeight="17.0" prefWidth="79.0" text="Middle_Name" />
                 <Label layoutX="173.0" layoutY="125.0" prefHeight="17.0" prefWidth="79.0" text="Date_Birth" />
-                <TextArea id="textArea" fx:id="textArea" layoutX="21.0" layoutY="698.0" prefHeight="200.0" prefWidth="200.0" />
-                <Label layoutX="21.0" layoutY="673.0" text="LOGS" />
-
-                <Button fx:id="add" layoutX="339.0" layoutY="25.0" mnemonicParsing="false" onAction="#addUser" prefHeight="25.0" prefWidth="79.0" text="ADD" />
-            <Button id="update" fx:id="update" layoutX="339.0" layoutY="68.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="Update" />
-            <Button id="delete" fx:id="delete" layoutX="339.0" layoutY="113.0" mnemonicParsing="false" onAction="#deleteUser" prefHeight="25.0" prefWidth="79.0" text="Delete" />
 
             <DatePicker fx:id="date_birth" layoutX="14.0" layoutY="121.0" prefHeight="25.0" prefWidth="149.0" />
+            <AnchorPane layoutX="300.0" layoutY="13.0" prefHeight="161.0" prefWidth="149.0" style="-fx-background-color: #F5FFFA;">
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+               <children>
+      
+                      <Button fx:id="add" layoutX="16.0" layoutY="23.0" mnemonicParsing="false" onAction="#addUser" prefHeight="25.0" prefWidth="114.0" text="ADD" />
+                  <Button id="update" fx:id="update" layoutX="16.0" layoutY="67.0" mnemonicParsing="false" onAction="#UpdateUser" prefHeight="25.0" prefWidth="114.0" text="UPDATE" />
+                  <Button id="delete" fx:id="delete" layoutX="16.0" layoutY="108.0" mnemonicParsing="false" onAction="#deleteUser" prefHeight="25.0" prefWidth="114.0" text="DELETE" />
+               </children></AnchorPane>
             </children>
         </AnchorPane>
-        <TableView fx:id="tableUsers" layoutX="528.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showOnClick" prefHeight="983.0" prefWidth="454.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="528.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="13.0">
+        <TableView fx:id="tableUsers" layoutX="528.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showOnClick" prefHeight="878.0" prefWidth="454.0" AnchorPane.bottomAnchor="109.0" AnchorPane.leftAnchor="528.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="13.0">
             <columns>
                 <TableColumn fx:id="nameColumn" prefWidth="75.0" text="First_Name" />
                 <TableColumn fx:id="lastColumn" prefWidth="75.0" text="Last_Name" />
@@ -38,5 +44,8 @@
                 <TableColumn fx:id="DateColumn" prefWidth="75.0" text="Date of Birth" />
             </columns>
         </TableView>
+          <TextArea id="textArea" fx:id="textArea" layoutX="527.0" layoutY="919.0" prefHeight="75.0" prefWidth="454.0" />
+          <Label layoutX="528.0" layoutY="895.0" text="LOGS" />
+      <Accordion />
     </children>
 </AnchorPane>
