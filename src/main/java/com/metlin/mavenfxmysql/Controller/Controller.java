@@ -86,7 +86,7 @@ public class Controller implements Initializable {
         middleColumn.setCellValueFactory(new PropertyValueFactory<User, String>("middle"));
         DateColumn.setCellValueFactory(new PropertyValueFactory<User, String>("birth"));
         loaddate();
-        textArea.setText("LOAD BASE Succsesfully");
+        textArea.setText("LOAD BASE SUCSESFULLY");
 
 
     }
@@ -139,37 +139,37 @@ public class Controller implements Initializable {
         String sql = "INSERT into people.warrior (name,last,middle,birth) Values (?,?,?,?)";
 
         preparedStatement = null;
-/*
-        if ((name == "") | (last == "") | (last == "")) {
 
-            textArea.setText("PLEASE FILL FIELDS ");
+        if ((name.isEmpty()) | (last.isEmpty()) | (middle.isEmpty())){
 
-        } else {*/
+            textArea.setText("PLEASE FILL ALL FIELDS ");
 
-        try {
+        } else {
 
-            Connection connection = (Connection) DBUtil.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
+            try {
 
-            preparedStatement.setString(1, name);
-            preparedStatement.setString(2, last);
-            preparedStatement.setString(3, middle);
-            preparedStatement.setString(4, String.valueOf(birth));
+                Connection connection = (Connection) DBUtil.getConnection();
+                preparedStatement = connection.prepareStatement(sql);
 
-            textArea.setText("User Added");
+                preparedStatement.setString(1, name);
+                preparedStatement.setString(2, last);
+                preparedStatement.setString(3, middle);
+                preparedStatement.setString(4, String.valueOf(birth));
 
-        } catch (SQLException e) {
-            textArea.setText(String.valueOf(e));
-            System.out.println(e);
+                textArea.setText("USER ADDED");
 
-        } finally {
-            preparedStatement.execute();
-            preparedStatement.close();
+            } catch (SQLException e) {
+                textArea.setText(String.valueOf(e));
+                System.out.println(e);
+
+            } finally {
+                preparedStatement.execute();
+                preparedStatement.close();
+            }
+
+            loaddate();
+
         }
-
-        loaddate();
-
-
     }
 
     static String tempUsername;
@@ -187,7 +187,7 @@ public class Controller implements Initializable {
             last_name.setText(user.getLast());
             middle_name.setText(user.getMiddle());
             date_birth.setValue(LocalDate.parse(user.getBirth()));
-            textArea.setText("You select" + " " + user.getName());
+            textArea.setText("YOU SELECT" + " " + user.getName());
 
             preparedStatement.close();
 
@@ -208,7 +208,7 @@ public class Controller implements Initializable {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, user.getName());
             preparedStatement.executeUpdate();
-            textArea.setText("User was deleted");
+            textArea.setText("USER WAS DELETED");
 
 
             preparedStatement.close();
@@ -217,6 +217,8 @@ public class Controller implements Initializable {
         } catch (SQLException e) {
             System.out.println(e);
             textArea.setText(String.valueOf(e));
+        }catch(NullPointerException e){
+            textArea.setText("PLEASE SELECT USER FOR DELETE");
         }
         loaddate();
 
@@ -226,22 +228,24 @@ public class Controller implements Initializable {
     public void UpdateUser() {
         String sql = "update people.warrior set name=?, last=?, middle=?, birth=? where name='" + tempUsername + "'";
 
-        try {
-            Connection connection = (Connection) DBUtil.getConnection();
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, first_name.getText());
-            preparedStatement.setString(2, last_name.getText());
-            preparedStatement.setString(3, middle_name.getText());
-            preparedStatement.setString(4, String.valueOf(date_birth.getValue()));
-            preparedStatement.execute();
-            preparedStatement.close();
-            loaddate();
-            textArea.setText("User" + " " + first_name.getText() + " " + "update");
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
 
-    }
+
+            try {
+                Connection connection = (Connection) DBUtil.getConnection();
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, first_name.getText());
+                preparedStatement.setString(2, last_name.getText());
+                preparedStatement.setString(3, middle_name.getText());
+                preparedStatement.setString(4, String.valueOf(date_birth.getValue()));
+                preparedStatement.execute();
+                preparedStatement.close();
+                loaddate();
+                textArea.setText("USER" + " " + first_name.getText() + " " + "UPDATE");
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+
+        }
 
 
 }
