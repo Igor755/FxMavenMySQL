@@ -1,6 +1,8 @@
 package com.metlin.mavenfxmysql.People;
 
 import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 
 public class User {
 
@@ -12,7 +14,8 @@ public class User {
 
 
 
-    public User( String name, String last, String middle, String birth) {
+
+    public User(String name, String last, String middle, String birth) {
 
         this.name = name;
         this.last = last;
@@ -22,6 +25,8 @@ public class User {
     public User(){
 
     }
+
+
 
 
 

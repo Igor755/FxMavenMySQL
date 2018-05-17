@@ -24,7 +24,7 @@
                 <Label layoutX="173.0" layoutY="125.0" prefHeight="17.0" prefWidth="79.0" text="Date_Birth" />
 
             <DatePicker fx:id="date_birth" layoutX="14.0" layoutY="121.0" prefHeight="25.0" prefWidth="149.0" />
-            <AnchorPane layoutX="300.0" layoutY="13.0" prefHeight="161.0" prefWidth="149.0" style="-fx-background-color: #F5FFFA;">
+            <AnchorPane layoutX="305.0" layoutY="101.0" prefHeight="161.0" prefWidth="149.0" style="-fx-background-color: #F5FFFA;">
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
@@ -34,6 +34,7 @@
                   <Button id="update" fx:id="update" layoutX="16.0" layoutY="67.0" mnemonicParsing="false" onAction="#UpdateUser" prefHeight="25.0" prefWidth="114.0" text="UPDATE" />
                   <Button id="delete" fx:id="delete" layoutX="16.0" layoutY="108.0" mnemonicParsing="false" onAction="#deleteUser" prefHeight="25.0" prefWidth="114.0" text="DELETE" />
                </children></AnchorPane>
+            <Button fx:id="create" layoutX="315.0" layoutY="18.0" mnemonicParsing="false" onAction="#CreateUser" prefHeight="49.0" prefWidth="128.0" text="CREATE_NEW_USER" />
             </children>
         </AnchorPane>
         <TableView fx:id="tableUsers" layoutX="528.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showOnClick" prefHeight="878.0" prefWidth="454.0" AnchorPane.bottomAnchor="109.0" AnchorPane.leftAnchor="528.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="13.0">
