@@ -19,8 +19,10 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -96,11 +98,13 @@ public class Controller implements Initializable {
     public void loaddate() {
 
         try {
+            DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
             first_name.clear();
             last_name.clear();
             middle_name.clear();
             date_birth.setValue(null);
+
 
 
             usersData.clear();
@@ -118,21 +122,24 @@ public class Controller implements Initializable {
                         resultSet.getString("birth")));
             }
 
+            tableUsers.setItems(usersData);
+
 
         } catch (SQLException e) {
             System.out.println("DON'T LOAD DATA");
+            System.out.println(e);
             textArea.setText("DON'T LOAD DATA");
+
+
         }
 
-        tableUsers.setItems(usersData);
-
-
     }
+
 
     @FXML
     public void addUser() throws SQLException {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
 
 
         String name = first_name.getText();
@@ -250,8 +257,9 @@ public class Controller implements Initializable {
         }
 
     }
+
     @FXML
-    public void CreateUser(){
+    public void CreateUser() {
 
         first_name.clear();
         last_name.clear();
@@ -266,4 +274,5 @@ public class Controller implements Initializable {
 
 
 }
+
 
