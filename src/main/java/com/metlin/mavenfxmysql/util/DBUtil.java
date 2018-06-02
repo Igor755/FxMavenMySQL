@@ -57,7 +57,7 @@ public class DBUtil {
                 "name varchar(20) NOT NULL, " +
                 "last varchar(20) NOT NULL, " +
                 "middle varchar(20) NOT NULL, " +
-                "birth varchar (20) NOT NULL)";
+                "birth date NOT NULL)";
 
         statement = connection.createStatement();
         statement.executeUpdate(sql);

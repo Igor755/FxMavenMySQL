@@ -20,6 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -74,7 +75,7 @@ public class Controller implements Initializable {
     private TableColumn<User, String> middleColumn;
 
     @FXML
-    private TableColumn<User, String> DateColumn;
+    private TableColumn<User, Date> DateColumn;
 
 
     private ObservableList<User> usersData = FXCollections.observableArrayList();
@@ -88,7 +89,7 @@ public class Controller implements Initializable {
         nameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("name"));
         lastColumn.setCellValueFactory(new PropertyValueFactory<User, String>("last"));
         middleColumn.setCellValueFactory(new PropertyValueFactory<User, String>("middle"));
-        DateColumn.setCellValueFactory(new PropertyValueFactory<User, String>("birth"));
+        DateColumn.setCellValueFactory(new PropertyValueFactory<User, Date>("birth"));
         loaddate();
         textArea.setText("LOAD BASE SUCSESFULLY");
 
@@ -98,7 +99,9 @@ public class Controller implements Initializable {
     public void loaddate() {
 
         try {
-            DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            DateFormat dateFormat =  new SimpleDateFormat("dd-MM-yyyy");
+            String date = "";
+            java.sql.Date sd;
 
             first_name.clear();
             last_name.clear();
@@ -119,7 +122,7 @@ public class Controller implements Initializable {
                 usersData.add(new User(resultSet.getString("name"),
                         resultSet.getString("last"),
                         resultSet.getString("middle"),
-                        resultSet.getString("birth")));
+                        date = dateFormat.format(resultSet.getDate("birth"))));//java sql date
             }
 
             tableUsers.setItems(usersData);
@@ -188,6 +191,11 @@ public class Controller implements Initializable {
     @FXML
     public void showOnClick() {
 
+
+        DateFormat formatter2 = new SimpleDateFormat("dd.MM.yyyy");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
         try {
             add.setDisable(true);
             User user = (User) tableUsers.getSelectionModel().getSelectedItem();
@@ -198,7 +206,7 @@ public class Controller implements Initializable {
             first_name.setText(user.getName());
             last_name.setText(user.getLast());
             middle_name.setText(user.getMiddle());
-            date_birth.setValue(LocalDate.parse(user.getBirth()));
+            date_birth.setValue(LocalDate.parse(user.getBirth(),formatter));
             textArea.setText("YOU SELECT" + " " + user.getName());
 
             preparedStatement.close();
@@ -215,10 +223,12 @@ public class Controller implements Initializable {
 
         try {
             User user = (User) tableUsers.getSelectionModel().getSelectedItem();
-            String sql = "delete from people.warrior where name=?";
+            String sql = "delete from people.warrior where name=? and last=? and middle=?";
             Connection connection = (Connection) DBUtil.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getLast());
+            preparedStatement.setString(3, user.getMiddle());
             preparedStatement.executeUpdate();
             textArea.setText("USER WAS DELETED");
 

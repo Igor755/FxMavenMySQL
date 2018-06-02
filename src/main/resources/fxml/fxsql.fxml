@@ -35,6 +35,8 @@
                   <Button id="delete" fx:id="delete" layoutX="16.0" layoutY="108.0" mnemonicParsing="false" onAction="#deleteUser" prefHeight="25.0" prefWidth="114.0" text="DELETE" />
                </children></AnchorPane>
             <Button fx:id="create" layoutX="315.0" layoutY="18.0" mnemonicParsing="false" onAction="#CreateUser" prefHeight="49.0" prefWidth="128.0" text="CREATE_NEW_USER" />
+            <TextField layoutX="14.0" layoutY="157.0" />
+            <Label layoutX="173.0" layoutY="161.0" prefHeight="17.0" prefWidth="89.0" text="Military_Rank" />
             </children>
         </AnchorPane>
         <TableView fx:id="tableUsers" layoutX="528.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showOnClick" prefHeight="878.0" prefWidth="454.0" AnchorPane.bottomAnchor="109.0" AnchorPane.leftAnchor="528.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="13.0">
@@ -43,6 +45,7 @@
                 <TableColumn fx:id="lastColumn" prefWidth="75.0" text="Last_Name" />
                 <TableColumn fx:id="middleColumn" prefWidth="97.0" text="Middle_Name" />
                 <TableColumn fx:id="DateColumn" prefWidth="75.0" text="Date of Birth" />
+            <TableColumn prefWidth="75.0" text="Military_Rank" />
             </columns>
         </TableView>
           <TextArea id="textArea" fx:id="textArea" layoutX="527.0" layoutY="919.0" prefHeight="75.0" prefWidth="454.0" />
