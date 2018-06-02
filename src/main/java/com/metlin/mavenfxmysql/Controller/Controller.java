@@ -57,6 +57,9 @@ public class Controller implements Initializable {
     @FXML
     private DatePicker date_birth;
 
+    @FXML
+    private TextField military_rank;
+
 
     @FXML
     private TableView<User> tableUsers;
@@ -77,9 +80,14 @@ public class Controller implements Initializable {
     @FXML
     private TableColumn<User, Date> DateColumn;
 
+    @FXML
+    private TableColumn<User, String> RankColumn;
+
 
     private ObservableList<User> usersData = FXCollections.observableArrayList();
     PreparedStatement preparedStatement = null;
+
+    ///^[А-Я]{1}[-]{1}[0-9]{6}$/
 
 
     @FXML
@@ -90,6 +98,7 @@ public class Controller implements Initializable {
         lastColumn.setCellValueFactory(new PropertyValueFactory<User, String>("last"));
         middleColumn.setCellValueFactory(new PropertyValueFactory<User, String>("middle"));
         DateColumn.setCellValueFactory(new PropertyValueFactory<User, Date>("birth"));
+        RankColumn.setCellValueFactory(new PropertyValueFactory<User, String>("rank"));
         loaddate();
         textArea.setText("LOAD BASE SUCSESFULLY");
 
@@ -99,7 +108,7 @@ public class Controller implements Initializable {
     public void loaddate() {
 
         try {
-            DateFormat dateFormat =  new SimpleDateFormat("dd-MM-yyyy");
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
             String date = "";
             java.sql.Date sd;
 
@@ -107,7 +116,7 @@ public class Controller implements Initializable {
             last_name.clear();
             middle_name.clear();
             date_birth.setValue(null);
-
+            military_rank.clear();
 
 
             usersData.clear();
@@ -122,7 +131,9 @@ public class Controller implements Initializable {
                 usersData.add(new User(resultSet.getString("name"),
                         resultSet.getString("last"),
                         resultSet.getString("middle"),
-                        date = dateFormat.format(resultSet.getDate("birth"))));//java sql date
+                        date = dateFormat.format(resultSet.getDate("birth")),//java sql date
+                        resultSet.getString("rank")));
+
             }
 
             tableUsers.setItems(usersData);
@@ -143,18 +154,17 @@ public class Controller implements Initializable {
     public void addUser() throws SQLException {
 
 
-
-
         String name = first_name.getText();
         String last = last_name.getText();
         String middle = middle_name.getText();
         String birth = String.valueOf(date_birth.getValue());
+        String rank = military_rank.getText();
 
-        String sql = "INSERT into people.warrior (name,last,middle,birth) Values (?,?,?,?)";
+        String sql = "INSERT into people.warrior (name,last,middle,birth,rank) Values (?,?,?,?,?)";
 
         preparedStatement = null;
 
-        if ((name.isEmpty()) | (last.isEmpty()) | (middle.isEmpty())) {
+        if ((name.isEmpty()) | (last.isEmpty()) | (middle.isEmpty()) | (rank.isEmpty())) {
 
             textArea.setText("PLEASE FILL ALL FIELDS ");
 
@@ -169,6 +179,7 @@ public class Controller implements Initializable {
                 preparedStatement.setString(2, last);
                 preparedStatement.setString(3, middle);
                 preparedStatement.setString(4, birth);
+                preparedStatement.setString(5, rank);
 
                 textArea.setText("USER ADDED");
 
@@ -202,11 +213,14 @@ public class Controller implements Initializable {
             String sql = "select * from people.warrior";
             Connection connection = (Connection) DBUtil.getConnection();
             preparedStatement = connection.prepareStatement(sql);
+
             tempUsername = user.getName();
             first_name.setText(user.getName());
             last_name.setText(user.getLast());
             middle_name.setText(user.getMiddle());
-            date_birth.setValue(LocalDate.parse(user.getBirth(),formatter));
+            date_birth.setValue(LocalDate.parse(user.getBirth(), formatter));
+            military_rank.setText(user.getRank());
+
             textArea.setText("YOU SELECT" + " " + user.getName());
 
             preparedStatement.close();
@@ -248,16 +262,19 @@ public class Controller implements Initializable {
 
     @FXML
     public void UpdateUser() {
-        String sql = "update people.warrior set name=?, last=?, middle=?, birth=? where name='" + tempUsername + "'";
+        String sql = "update people.warrior set name=?, last=?, middle=?, birth=?, rank=? where name='" + tempUsername + "'";
 
 
         try {
             Connection connection = (Connection) DBUtil.getConnection();
             preparedStatement = connection.prepareStatement(sql);
+
             preparedStatement.setString(1, first_name.getText());
             preparedStatement.setString(2, last_name.getText());
             preparedStatement.setString(3, middle_name.getText());
             preparedStatement.setDate(4, java.sql.Date.valueOf(date_birth.getValue()));
+            preparedStatement.setString(5, military_rank.getText());
+
             preparedStatement.execute();
             preparedStatement.close();
             loaddate();
@@ -275,6 +292,8 @@ public class Controller implements Initializable {
         last_name.clear();
         middle_name.clear();
         date_birth.setValue(null);
+        military_rank.clear();
+
         usersData.clear();
         add.setDisable(false);
         loaddate();
