@@ -2,29 +2,24 @@ package com.metlin.mavenfxmysql.Controller;
 
 
 import com.metlin.mavenfxmysql.People.User;
+
 import com.metlin.mavenfxmysql.util.DBUtil;
 import com.mysql.jdbc.Connection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 
-import javax.swing.*;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -86,8 +81,6 @@ public class Controller implements Initializable {
 
     private ObservableList<User> usersData = FXCollections.observableArrayList();
     PreparedStatement preparedStatement = null;
-
-    ///^[А-Я]{1}[-]{1}[0-9]{6}$/
 
 
     @FXML
@@ -164,13 +157,15 @@ public class Controller implements Initializable {
 
         preparedStatement = null;
 
-        if ((name.isEmpty()) | (last.isEmpty()) | (middle.isEmpty()) | (rank.isEmpty())) {
+        if ((name.isEmpty()) | (last.isEmpty()) | (middle.isEmpty()) | (rank.isEmpty()) | (rank.matches("^[А-Я]{1}[-]{1}[0-9]{6}$") == false)) {
 
-            textArea.setText("PLEASE FILL ALL FIELDS ");
+            textArea.setText("PLEASE FILL ALL FIELDS OR " +
+                    "Rank must be [А-Я]{1}[-]{1}[0-9]{6}");
 
         } else {
 
             try {
+
 
                 Connection connection = (Connection) DBUtil.getConnection();
                 preparedStatement = connection.prepareStatement(sql);
@@ -181,7 +176,9 @@ public class Controller implements Initializable {
                 preparedStatement.setString(4, birth);
                 preparedStatement.setString(5, rank);
 
+
                 textArea.setText("USER ADDED");
+
 
             } catch (SQLException e) {
                 textArea.setText(String.valueOf(e));
@@ -196,6 +193,7 @@ public class Controller implements Initializable {
 
         }
     }
+
 
     static String tempUsername;
 
@@ -273,6 +271,11 @@ public class Controller implements Initializable {
             preparedStatement.setString(2, last_name.getText());
             preparedStatement.setString(3, middle_name.getText());
             preparedStatement.setDate(4, java.sql.Date.valueOf(date_birth.getValue()));
+
+
+
+            //if    military_rank.getText().matches("^[А-Я]{1}[-]{1}[0-9]{6}$") == false));
+
             preparedStatement.setString(5, military_rank.getText());
 
             preparedStatement.execute();
