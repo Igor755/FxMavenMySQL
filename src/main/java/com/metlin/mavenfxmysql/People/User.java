@@ -13,18 +13,20 @@ public class User {
     private String last;
     private String middle;
     private String birth;
-    private String rank;
+    private String personalnumber;
+    private String militaryrank;
 
 
 
 
-    public User(String name, String last, String middle, String birth, String rank) {
+    public User(String name, String last, String middle, String birth, String personalnumber, String militaryrank) {
 
         this.name = name;
         this.last = last;
         this.middle = middle;
         this.birth = birth;
-        this.rank = rank;
+        this.personalnumber = personalnumber;
+        this.militaryrank = militaryrank;
     }
     public User(){
 
@@ -66,12 +68,19 @@ public class User {
         this.birth = birth;
     }
 
-    public String getRank() {
-        return rank;
+    public String getPersonalnumber() {
+        return personalnumber;
     }
 
-    public void setRank(String rank) {
-        this.rank = rank;
+    public void setPersonalnumber(String personalnumber) {
+        this.personalnumber = personalnumber;
     }
 
+    public String getMilitaryrank() {
+        return militaryrank;
+    }
+
+    public void setMilitaryrank(String militaryrank) {
+        this.militaryrank = militaryrank;
+    }
 }

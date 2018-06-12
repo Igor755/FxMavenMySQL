@@ -25,14 +25,13 @@ public class DBUtil {
             e.printStackTrace();
         } catch (SQLException e) {
 
-        }
-        finally {
+        } finally {
 
             try {
-                if (statement != null){
+                if (statement != null) {
                     statement.close();
                 }
-            }catch (SQLException ex){
+            } catch (SQLException ex) {
                 System.out.println(ex);
 
             }
@@ -57,8 +56,9 @@ public class DBUtil {
                 "name varchar(20) NOT NULL, " +
                 "last varchar(20) NOT NULL, " +
                 "middle varchar(20) NOT NULL, " +
-                "birth date NOT NULL," +
-                "rank varchar(8) NOT NULL)";
+                "birth date NOT NULL, " +
+                "personalnumber varchar(8) NOT NULL, " +
+                "militaryrank varchar(20) NOT NULL)";
 
         statement = connection.createStatement();
         statement.executeUpdate(sql);
