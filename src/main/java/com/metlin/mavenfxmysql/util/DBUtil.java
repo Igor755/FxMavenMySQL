@@ -44,8 +44,13 @@ public class DBUtil {
 
         String sql = "CREATE DATABASE IF NOT EXISTS people;";
         statement = connection.createStatement();
-        statement.executeUpdate(sql);
-        System.out.println("Database has been created");
+
+        try {
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -62,8 +67,13 @@ public class DBUtil {
                 "orderdate date NOT NULL)";
 
         statement = connection.createStatement();
-        statement.executeUpdate(sql);
-        System.out.println("Table has been created");
+
+        try {
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
 
     }
 }
