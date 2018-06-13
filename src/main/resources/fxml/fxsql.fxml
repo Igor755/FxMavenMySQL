@@ -40,6 +40,8 @@
             <Label layoutX="173.0" layoutY="200.0" prefHeight="17.0" prefWidth="104.0" text="Military_Rank" />
             <Label layoutX="173.0" layoutY="161.0" prefHeight="17.0" prefWidth="104.0" text="Personal_Number" />
             <Spinner fx:id="military_spiner" layoutX="14.0" layoutY="196.0" />
+            <DatePicker fx:id="date_order" layoutX="14.0" layoutY="231.0" prefHeight="25.0" prefWidth="149.0" />
+            <Label layoutX="173.0" layoutY="235.0" prefHeight="17.0" prefWidth="79.0" text="Date_of_Order" />
             </children>
         </AnchorPane>
         <TableView fx:id="tableUsers" layoutX="528.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showOnClick" prefHeight="878.0" prefWidth="454.0" AnchorPane.bottomAnchor="109.0" AnchorPane.leftAnchor="528.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="13.0">
@@ -49,7 +51,8 @@
                 <TableColumn fx:id="middleColumn" prefWidth="97.0" text="Middle_Name" />
                 <TableColumn fx:id="DateColumn" prefWidth="75.0" text="Date of Birth" />
             <TableColumn fx:id="personalNumberColumn" prefWidth="49.0" text="Personal_Number" />
-            <TableColumn fx:id="militaryRankColumn" prefWidth="75.0" text="Military_Rank" />
+            <TableColumn fx:id="militaryRankColumn" prefWidth="36.0" text="Military_Rank" />
+            <TableColumn fx:id="dateOrderColumn" prefWidth="75.0" text="Date_of_Order" />
             </columns>
         </TableView>
           <TextArea id="textArea" fx:id="textArea" layoutX="527.0" layoutY="919.0" prefHeight="75.0" prefWidth="454.0" />

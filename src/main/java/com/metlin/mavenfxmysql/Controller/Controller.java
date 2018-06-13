@@ -58,6 +58,9 @@ public class Controller implements Initializable {
     @FXML
     private Spinner<String> military_spiner = new Spinner<String>();
 
+    @FXML
+    private DatePicker date_order;
+
 
     @FXML
     private TableView<User> tableUsers;
@@ -84,13 +87,17 @@ public class Controller implements Initializable {
     @FXML
     private TableColumn<User, String> militaryRankColumn;
 
+    @FXML
+    private TableColumn<User, Date> dateOrderColumn;
+
 
     private ObservableList<User> usersData = FXCollections.observableArrayList();
     PreparedStatement preparedStatement = null;
 
     ObservableList<String> rank = FXCollections.observableArrayList("",
-            "Младший лейтенант", "Лейтенант", "Старший лейтенант", "Капитан",
-            "Майор", "Подполковник", "Полковник", "Генерал-майор",
+            "Младший сержант", "Сержант", "Старший сержант", "Мичман", "Прапорщик",
+            "Старший прапорщик", "Младший лейтенант", "Лейтенант", "Старший лейтенант",
+            "Капитан", "Майор", "Подполковник", "Полковник", "Генерал-майор",
             "Генерал-лейтенант", "Генерал-полковник", "Генерал армии", "Маршал Российской Федерации");
 
     SpinnerValueFactory<String> valueFactory =
@@ -111,6 +118,8 @@ public class Controller implements Initializable {
         DateColumn.setCellValueFactory(new PropertyValueFactory<User, Date>("birth"));
         personalNumberColumn.setCellValueFactory(new PropertyValueFactory<User, String>("personalnumber"));
         militaryRankColumn.setCellValueFactory(new PropertyValueFactory<User, String>("militaryrank"));
+        dateOrderColumn.setCellValueFactory(new PropertyValueFactory<User, Date>("orderdate"));
+
         loaddate();
         textArea.setText("LOAD BASE SUCSESFULLY");
 
@@ -122,6 +131,7 @@ public class Controller implements Initializable {
         try {
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
             String date = "";
+            String dateord = "";
             java.sql.Date sd;
 
             first_name.clear();
@@ -130,6 +140,7 @@ public class Controller implements Initializable {
             date_birth.setValue(null);
             personal_number.clear();
             military_spiner.getEditor().setText("");
+            date_order.setValue(null);
 
 
             usersData.clear();
@@ -146,7 +157,8 @@ public class Controller implements Initializable {
                         resultSet.getString("middle"),
                         date = dateFormat.format(resultSet.getDate("birth")),//java sql date
                         resultSet.getString("personalnumber"),
-                        resultSet.getString("militaryrank")));
+                        resultSet.getString("militaryrank"),
+                        dateord = dateFormat.format(resultSet.getDate("orderdate"))));
 
             }
 
@@ -174,15 +186,24 @@ public class Controller implements Initializable {
         String birth = String.valueOf(date_birth.getValue());
         String personalnumber = personal_number.getText();
         String militaryrank = military_spiner.getEditor().getText();
+        String orderdate = String.valueOf(date_order.getValue());
 
-        String sql = "INSERT into people.warrior (name,last,middle,birth,personalnumber,militaryrank) Values (?,?,?,?,?,?)";
+
+        String sql = "INSERT into people.warrior (name,last,middle,birth,personalnumber,militaryrank,orderdate) Values (?,?,?,?,?,?,?)";
 
         preparedStatement = null;
 
-        if ((name.isEmpty()) | (last.isEmpty()) | (middle.isEmpty()) | (personalnumber.isEmpty()) | (personalnumber.matches("^[А-Я]{1}[-]{1}[0-9]{6}$") == false)) {
+        if ((name.isEmpty()) |
+                (last.isEmpty()) |
+                (middle.isEmpty()) |
+                (birth.isEmpty()) |
+                (personalnumber.isEmpty()) |
+                (personalnumber.matches("^[А-Я]{1}[-]{1}[0-9]{6}$") == false) |
+                (militaryrank.isEmpty()) | (orderdate.isEmpty())) {
 
             textArea.setText("PLEASE FILL ALL FIELDS OR " +
                     "Rank must be [А-Я]{1}[-]{1}[0-9]{6}");
+
 
         } else {
 
@@ -198,6 +219,7 @@ public class Controller implements Initializable {
                 preparedStatement.setString(4, birth);
                 preparedStatement.setString(5, personalnumber);
                 preparedStatement.setString(6, militaryrank);
+                preparedStatement.setString(7, orderdate);
 
 
                 textArea.setText("USER ADDED");
@@ -224,7 +246,6 @@ public class Controller implements Initializable {
     public void showOnClick() {
 
 
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         try {
@@ -242,10 +263,7 @@ public class Controller implements Initializable {
             date_birth.setValue(LocalDate.parse(user.getBirth(), formatter));
             personal_number.setText(user.getPersonalnumber());
             military_spiner.getEditor().setText(user.getMilitaryrank());
-
-
-
-
+            date_order.setValue(LocalDate.parse(user.getOrderdate(), formatter));
 
 
             textArea.setText("YOU SELECT" + " " + user.getName());
@@ -303,9 +321,10 @@ public class Controller implements Initializable {
         String birth = String.valueOf(date_birth.getValue());
         String personalnumber = personal_number.getText();
         String militaryrank = military_spiner.getEditor().getText();
+        String orderdate = String.valueOf(date_order.getValue());
 
 
-        String sql = "update people.warrior set name=?, last=?, middle=?, birth=?, personalNumber=?, militaryrank=? where name='" + tempUsername + "'";
+        String sql = "update people.warrior set name=?, last=?, middle=?, birth=?, personalNumber=?, militaryrank=?, orderdate=? where name='" + tempUsername + "'";
 
 
         if ((name.isEmpty()) | (last.isEmpty()) | (middle.isEmpty()) | (personalnumber.isEmpty()) | (personalnumber.matches("^[А-Я]{1}[-]{1}[0-9]{6}$") == false)) {
@@ -326,6 +345,8 @@ public class Controller implements Initializable {
                 preparedStatement.setDate(4, java.sql.Date.valueOf(date_birth.getValue()));
                 preparedStatement.setString(5, personal_number.getText());
                 preparedStatement.setString(6, military_spiner.getEditor().getText());
+                preparedStatement.setDate(7, java.sql.Date.valueOf(date_order.getValue()));
+
 
                 preparedStatement.execute();
                 preparedStatement.close();
@@ -349,6 +370,7 @@ public class Controller implements Initializable {
         date_birth.setValue(null);
         personal_number.clear();
         military_spiner.getEditor().setText("");
+        date_order.setValue(null);
 
         usersData.clear();
         add.setDisable(false);

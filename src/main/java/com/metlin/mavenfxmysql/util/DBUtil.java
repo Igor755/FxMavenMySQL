@@ -58,7 +58,8 @@ public class DBUtil {
                 "middle varchar(20) NOT NULL, " +
                 "birth date NOT NULL, " +
                 "personalnumber varchar(8) NOT NULL, " +
-                "militaryrank varchar(20) NOT NULL)";
+                "militaryrank varchar(30) NOT NULL, " +
+                "orderdate date NOT NULL)";
 
         statement = connection.createStatement();
         statement.executeUpdate(sql);

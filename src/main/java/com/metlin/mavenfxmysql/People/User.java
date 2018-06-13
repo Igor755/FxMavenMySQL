@@ -15,11 +15,12 @@ public class User {
     private String birth;
     private String personalnumber;
     private String militaryrank;
+    private String orderdate;
 
 
 
 
-    public User(String name, String last, String middle, String birth, String personalnumber, String militaryrank) {
+    public User(String name, String last, String middle, String birth, String personalnumber, String militaryrank, String orderdate) {
 
         this.name = name;
         this.last = last;
@@ -27,6 +28,7 @@ public class User {
         this.birth = birth;
         this.personalnumber = personalnumber;
         this.militaryrank = militaryrank;
+        this.orderdate = orderdate;
     }
     public User(){
 
@@ -82,5 +84,13 @@ public class User {
 
     public void setMilitaryrank(String militaryrank) {
         this.militaryrank = militaryrank;
+    }
+
+    public String getOrderdate() {
+        return orderdate;
+    }
+
+    public void setOrderdate(String orderdate) {
+        this.orderdate = orderdate;
     }
 }
