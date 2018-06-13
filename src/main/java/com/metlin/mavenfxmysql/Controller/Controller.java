@@ -3,6 +3,7 @@ package com.metlin.mavenfxmysql.Controller;
 
 import com.metlin.mavenfxmysql.People.User;
 
+
 import com.metlin.mavenfxmysql.util.DBUtil;
 import com.mysql.jdbc.Connection;
 import javafx.collections.FXCollections;
@@ -61,6 +62,9 @@ public class Controller implements Initializable {
     @FXML
     private DatePicker date_order;
 
+    @FXML
+    private TextField number_unit;
+
 
     @FXML
     private TableView<User> tableUsers;
@@ -89,6 +93,9 @@ public class Controller implements Initializable {
 
     @FXML
     private TableColumn<User, Date> dateOrderColumn;
+
+    @FXML
+    private TableColumn<User, Integer> numberUnitColumn;
 
 
     private ObservableList<User> usersData = FXCollections.observableArrayList();
@@ -119,6 +126,23 @@ public class Controller implements Initializable {
         personalNumberColumn.setCellValueFactory(new PropertyValueFactory<User, String>("personalnumber"));
         militaryRankColumn.setCellValueFactory(new PropertyValueFactory<User, String>("militaryrank"));
         dateOrderColumn.setCellValueFactory(new PropertyValueFactory<User, Date>("orderdate"));
+        numberUnitColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("numberunit"));
+
+        Tooltip tooltip_personal_number = new Tooltip("\n" +
+                "This field includes:\n " +
+                "The first letter character from А to Я, \n" +
+                "the second character is a dash and \n" +
+                "6 digits");
+
+        Tooltip tooltip_number_unit = new Tooltip("\n" +
+                "This field includes: \n" +
+                "one, two, three, four or five digits");
+
+
+
+        personal_number.setTooltip(tooltip_personal_number);
+        number_unit.setTooltip(tooltip_number_unit);
+
 
         loaddate();
         textArea.setText("LOAD BASE SUCSESFULLY");
@@ -141,6 +165,7 @@ public class Controller implements Initializable {
             personal_number.clear();
             military_spiner.getEditor().setText("");
             date_order.setValue(null);
+            number_unit.clear();
 
 
             usersData.clear();
@@ -158,7 +183,8 @@ public class Controller implements Initializable {
                         date = dateFormat.format(resultSet.getDate("birth")),//java sql date
                         resultSet.getString("personalnumber"),
                         resultSet.getString("militaryrank"),
-                        dateord = dateFormat.format(resultSet.getDate("orderdate"))));
+                        dateord = dateFormat.format(resultSet.getDate("orderdate")),
+                        resultSet.getInt("numberunit")));
 
             }
 
@@ -187,9 +213,10 @@ public class Controller implements Initializable {
         String personalnumber = personal_number.getText();
         String militaryrank = military_spiner.getEditor().getText();
         String orderdate = String.valueOf(date_order.getValue());
+        String numberunit = number_unit.getText();
 
 
-        String sql = "INSERT into people.warrior (name,last,middle,birth,personalnumber,militaryrank,orderdate) Values (?,?,?,?,?,?,?)";
+        String sql = "INSERT into people.warrior (name,last,middle,birth,personalnumber,militaryrank,orderdate,numberunit) Values (?,?,?,?,?,?,?,?)";
 
         preparedStatement = null;
 
@@ -199,11 +226,14 @@ public class Controller implements Initializable {
                 (birth.isEmpty()) |
                 (personalnumber.isEmpty()) |
                 (personalnumber.matches("^[А-Я]{1}[-]{1}[0-9]{6}$") == false) |
-                (militaryrank.isEmpty()) | (orderdate.isEmpty())) {
+                (militaryrank.isEmpty()) |
+                (orderdate.isEmpty()) |
+                (numberunit.isEmpty()) |
+                (numberunit.matches("^[0-9]{1,5}$") == false)) {
 
-            textArea.setText("PLEASE FILL ALL FIELDS OR " +
-                    "Rank must be [А-Я]{1}[-]{1}[0-9]{6}");
-
+            textArea.setText("PLEASE FILL ALL FIELDS OR \n" +
+                    "Rank must be [А-Я]{1}[-]{1}[0-9]{6} OR \n" +
+                    "Numberunit must be [0-9]{1,5}");
 
         } else {
 
@@ -220,6 +250,7 @@ public class Controller implements Initializable {
                 preparedStatement.setString(5, personalnumber);
                 preparedStatement.setString(6, militaryrank);
                 preparedStatement.setString(7, orderdate);
+                preparedStatement.setString(8, numberunit);
 
 
                 textArea.setText("USER ADDED");
@@ -264,6 +295,7 @@ public class Controller implements Initializable {
             personal_number.setText(user.getPersonalnumber());
             military_spiner.getEditor().setText(user.getMilitaryrank());
             date_order.setValue(LocalDate.parse(user.getOrderdate(), formatter));
+            number_unit.setText(String.valueOf(user.getNumberunit()));
 
 
             textArea.setText("YOU SELECT" + " " + user.getName());
@@ -283,7 +315,7 @@ public class Controller implements Initializable {
         try {
             User user = (User) tableUsers.getSelectionModel().getSelectedItem();
 
-            String sql = "delete from people.warrior where name=? and last=? and middle=? and birth=? and personalnumber=?";
+            String sql = "delete from people.warrior where name=? and last=? and middle=? and birth=? and personalnumber=? and militaryrank=? and orderdate=? and numberunit=?";
             Connection connection = (Connection) DBUtil.getConnection();
 
             preparedStatement = connection.prepareStatement(sql);
@@ -292,6 +324,11 @@ public class Controller implements Initializable {
             preparedStatement.setString(3, user.getMiddle());
             preparedStatement.setDate(4, java.sql.Date.valueOf(date_birth.getValue()));
             preparedStatement.setString(5, user.getPersonalnumber());
+
+            preparedStatement.setString(6, user.getMilitaryrank());
+            preparedStatement.setDate(7, java.sql.Date.valueOf(date_order.getValue()));
+            preparedStatement.setString(8, String.valueOf(user.getNumberunit()));
+
 
 
             preparedStatement.executeUpdate();
@@ -322,15 +359,26 @@ public class Controller implements Initializable {
         String personalnumber = personal_number.getText();
         String militaryrank = military_spiner.getEditor().getText();
         String orderdate = String.valueOf(date_order.getValue());
+        String numberunit = number_unit.getText();
 
 
-        String sql = "update people.warrior set name=?, last=?, middle=?, birth=?, personalNumber=?, militaryrank=?, orderdate=? where name='" + tempUsername + "'";
+        String sql = "update people.warrior set name=?, last=?, middle=?, birth=?, personalNumber=?, militaryrank=?, orderdate=?, numberunit=? where name='" + tempUsername + "'";
 
 
-        if ((name.isEmpty()) | (last.isEmpty()) | (middle.isEmpty()) | (personalnumber.isEmpty()) | (personalnumber.matches("^[А-Я]{1}[-]{1}[0-9]{6}$") == false)) {
+        if ((name.isEmpty()) |
+                (last.isEmpty()) |
+                (middle.isEmpty()) |
+                (birth.isEmpty()) |
+                (personalnumber.isEmpty()) |
+                (personalnumber.matches("^[А-Я]{1}[-]{1}[0-9]{6}$") == false) |
+                (militaryrank.isEmpty()) |
+                (orderdate.isEmpty()) |
+                (numberunit.isEmpty()) |
+                (numberunit.matches("^[0-9]{1,5}$") == false)) {
 
-            textArea.setText("PLEASE FILL ALL FIELDS OR " +
-                    "Rank must be [А-Я]{1}[-]{1}[0-9]{6}");
+            textArea.setText("PLEASE FILL ALL FIELDS OR \n" +
+                    "Rank must be [А-Я]{1}[-]{1}[0-9]{6} OR \n" +
+                    "Numberunit must be [0-9]{1,5}");
 
         } else {
 
@@ -346,6 +394,7 @@ public class Controller implements Initializable {
                 preparedStatement.setString(5, personal_number.getText());
                 preparedStatement.setString(6, military_spiner.getEditor().getText());
                 preparedStatement.setDate(7, java.sql.Date.valueOf(date_order.getValue()));
+                preparedStatement.setString(8,number_unit.getText());
 
 
                 preparedStatement.execute();
@@ -371,6 +420,7 @@ public class Controller implements Initializable {
         personal_number.clear();
         military_spiner.getEditor().setText("");
         date_order.setValue(null);
+        number_unit.clear();
 
         usersData.clear();
         add.setDisable(false);

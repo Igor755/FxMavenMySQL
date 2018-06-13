@@ -64,7 +64,8 @@ public class DBUtil {
                 "birth date NOT NULL, " +
                 "personalnumber varchar(8) NOT NULL, " +
                 "militaryrank varchar(30) NOT NULL, " +
-                "orderdate date NOT NULL)";
+                "orderdate date NOT NULL, " +
+                "numberunit INT NOT NULL)";
 
         statement = connection.createStatement();
 

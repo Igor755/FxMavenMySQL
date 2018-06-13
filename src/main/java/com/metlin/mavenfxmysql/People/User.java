@@ -16,11 +16,12 @@ public class User {
     private String personalnumber;
     private String militaryrank;
     private String orderdate;
+    private int numberunit;
 
 
 
 
-    public User(String name, String last, String middle, String birth, String personalnumber, String militaryrank, String orderdate) {
+    public User(String name, String last, String middle, String birth, String personalnumber, String militaryrank, String orderdate, Integer numberunit) {
 
         this.name = name;
         this.last = last;
@@ -29,6 +30,7 @@ public class User {
         this.personalnumber = personalnumber;
         this.militaryrank = militaryrank;
         this.orderdate = orderdate;
+        this.numberunit = numberunit;
     }
     public User(){
 
@@ -92,5 +94,13 @@ public class User {
 
     public void setOrderdate(String orderdate) {
         this.orderdate = orderdate;
+    }
+
+    public int getNumberunit() {
+        return numberunit;
+    }
+
+    public void setNumberunit(int numberunit) {
+        this.numberunit = numberunit;
     }
 }
