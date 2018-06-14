@@ -58,14 +58,16 @@ public class DBUtil {
 
         String sql = "CREATE TABLE IF NOT EXISTS people.warrior" +
                 "(id INT NOT NULL primary key auto_increment, " +
-                "name varchar(20) NOT NULL, " +
+                "numberunit INT NOT NULL, " +
                 "last varchar(20) NOT NULL, " +
+                "name varchar(20) NOT NULL, " +
                 "middle varchar(20) NOT NULL, " +
                 "birth date NOT NULL, " +
                 "personalnumber varchar(8) NOT NULL, " +
                 "militaryrank varchar(30) NOT NULL, " +
-                "orderdate date NOT NULL, " +
-                "numberunit INT NOT NULL)";
+                "nomrspiner varchar(20) NOT NULL, " +
+                "nomrdate date NOT NULL)";
+
 
         statement = connection.createStatement();
 

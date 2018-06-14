@@ -37,66 +37,73 @@ public class Controller implements Initializable {
     @FXML
     private Button delete;
 
+//////////////////////////////////////////////////////////////
 
     @FXML
     private TextArea textArea;
 
-    @FXML
-    private TextField first_name;
 
-    @FXML
-    private TextField last_name;
-
-    @FXML
-    private TextField middle_name;
-
-    @FXML
-    private DatePicker date_birth;
-
-    @FXML
-    private TextField personal_number;
-
-    @FXML
-    private Spinner<String> military_spiner = new Spinner<String>();
-
-    @FXML
-    private DatePicker date_order;
+////////////////////////////////////////////////////////////
 
     @FXML
     private TextField number_unit;
+    @FXML
+    private TextField last_name;
+    @FXML
+    private TextField first_name;
+    @FXML
+    private TextField middle_name;
+    @FXML
+    private DatePicker date_birth;
+    @FXML
+    private TextField personal_number;
+    @FXML
+    private Spinner<String> military_spiner = new Spinner<String>();
 
+
+////////////////////////////////////////////////////////////
+
+    @FXML
+    private Spinner<String> nomr_spiner = new Spinner<String>();
+    @FXML
+    private DatePicker nomr_date;
+
+
+
+////////////////////////////////////////////////////////////
 
     @FXML
     private TableView<User> tableUsers;
 
+////////////////////////////////////////////////////////////
 
     @FXML
     private TableColumn<User, Integer> idColumn;
-
     @FXML
-    private TableColumn<User, String> nameColumn;
-
+    private TableColumn<User, Integer> numberUnitColumn;
     @FXML
     private TableColumn<User, String> lastColumn;
-
+    @FXML
+    private TableColumn<User, String> nameColumn;
     @FXML
     private TableColumn<User, String> middleColumn;
-
     @FXML
     private TableColumn<User, Date> DateColumn;
-
     @FXML
     private TableColumn<User, String> personalNumberColumn;
-
     @FXML
     private TableColumn<User, String> militaryRankColumn;
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @FXML
-    private TableColumn<User, Date> dateOrderColumn;
-
+    private TableColumn<User, String> nomrColumn;
     @FXML
-    private TableColumn<User, Integer> numberUnitColumn;
+    private TableColumn<User, String> prikazNomrColumn;
+    @FXML
+    private TableColumn<User, Date> dateNomrColumn;
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private ObservableList<User> usersData = FXCollections.observableArrayList();
     PreparedStatement preparedStatement = null;
@@ -112,21 +119,38 @@ public class Controller implements Initializable {
 
     public DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ObservableList<String> nomr = FXCollections.observableArrayList("",
+            "Приказ МО РФ", "Пригаз НГУ", "Приказ КЧ 52", "Приказ КЧ 27");
+
+    SpinnerValueFactory<String> valueFactory_nomr =
+            new SpinnerValueFactory.ListSpinnerValueFactory<String>(nomr);
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
 
         military_spiner.setValueFactory(valueFactory);
+        nomr_spiner.setValueFactory(valueFactory_nomr);
 
 
-        nameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("name"));
+        numberUnitColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("numberunit"));
         lastColumn.setCellValueFactory(new PropertyValueFactory<User, String>("last"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("name"));
         middleColumn.setCellValueFactory(new PropertyValueFactory<User, String>("middle"));
         DateColumn.setCellValueFactory(new PropertyValueFactory<User, Date>("birth"));
         personalNumberColumn.setCellValueFactory(new PropertyValueFactory<User, String>("personalnumber"));
         militaryRankColumn.setCellValueFactory(new PropertyValueFactory<User, String>("militaryrank"));
-        dateOrderColumn.setCellValueFactory(new PropertyValueFactory<User, Date>("orderdate"));
-        numberUnitColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("numberunit"));
+
+        prikazNomrColumn.setCellValueFactory(new PropertyValueFactory<User, String>("nomrspiner"));
+        dateNomrColumn.setCellValueFactory(new PropertyValueFactory<User, Date>("nomrdate"));
+
+
+
 
         Tooltip tooltip_personal_number = new Tooltip("\n" +
                 "This field includes:\n " +
@@ -137,7 +161,6 @@ public class Controller implements Initializable {
         Tooltip tooltip_number_unit = new Tooltip("\n" +
                 "This field includes: \n" +
                 "one, two, three, four or five digits");
-
 
 
         personal_number.setTooltip(tooltip_personal_number);
@@ -158,14 +181,22 @@ public class Controller implements Initializable {
             String dateord = "";
             java.sql.Date sd;
 
-            first_name.clear();
+
+            number_unit.clear();
             last_name.clear();
+            first_name.clear();
             middle_name.clear();
             date_birth.setValue(null);
             personal_number.clear();
             military_spiner.getEditor().setText("");
-            date_order.setValue(null);
-            number_unit.clear();
+
+
+
+            nomr_spiner.getEditor().setText("");
+            nomr_date.setValue(null);
+
+
+
 
 
             usersData.clear();
@@ -177,16 +208,19 @@ public class Controller implements Initializable {
             while (resultSet.next()) {
 
 
-                usersData.add(new User(resultSet.getString("name"),
+                usersData.add(new User(resultSet.getInt("numberunit"),
                         resultSet.getString("last"),
-                        resultSet.getString("middle"),
+                        resultSet.getString("name"),
+                        resultSet.getString("middle"),//java sql date
                         date = dateFormat.format(resultSet.getDate("birth")),//java sql date
                         resultSet.getString("personalnumber"),
                         resultSet.getString("militaryrank"),
-                        dateord = dateFormat.format(resultSet.getDate("orderdate")),
-                        resultSet.getInt("numberunit")));
+                        resultSet.getString("nomrspiner"),
+                        dateord = dateFormat.format(resultSet.getDate("nomrdate"))));//java sql date));
 
             }
+
+
 
             tableUsers.setItems(usersData);
 
@@ -206,30 +240,38 @@ public class Controller implements Initializable {
     public void addUser() throws SQLException {
 
 
-        String name = first_name.getText();
+        String numberunit = number_unit.getText();
         String last = last_name.getText();
+        String name = first_name.getText();
         String middle = middle_name.getText();
         String birth = String.valueOf(date_birth.getValue());
         String personalnumber = personal_number.getText();
         String militaryrank = military_spiner.getEditor().getText();
-        String orderdate = String.valueOf(date_order.getValue());
-        String numberunit = number_unit.getText();
 
 
-        String sql = "INSERT into people.warrior (name,last,middle,birth,personalnumber,militaryrank,orderdate,numberunit) Values (?,?,?,?,?,?,?,?)";
+        String nomrspiner = nomr_spiner.getEditor().getText();
+        String nomrdate = String.valueOf(nomr_date.getValue());
+
+
+        String sql = "INSERT into people.warrior (numberunit,last,name,middle,birth,personalnumber,militaryrank,nomrspiner,nomrdate) Values (?,?,?,?,?,?,?,?,?)";
 
         preparedStatement = null;
 
-        if ((name.isEmpty()) |
+        if ((numberunit.isEmpty()) |
+                (numberunit.matches("^[0-9]{1,5}$") == false) |
                 (last.isEmpty()) |
+                (name.isEmpty()) |
                 (middle.isEmpty()) |
                 (birth.isEmpty()) |
                 (personalnumber.isEmpty()) |
                 (personalnumber.matches("^[А-Я]{1}[-]{1}[0-9]{6}$") == false) |
                 (militaryrank.isEmpty()) |
-                (orderdate.isEmpty()) |
-                (numberunit.isEmpty()) |
-                (numberunit.matches("^[0-9]{1,5}$") == false)) {
+                (nomrspiner.isEmpty()) |
+                (nomrdate.isEmpty()))
+
+
+        {
+
 
             textArea.setText("PLEASE FILL ALL FIELDS OR \n" +
                     "Rank must be [А-Я]{1}[-]{1}[0-9]{6} OR \n" +
@@ -243,14 +285,21 @@ public class Controller implements Initializable {
                 Connection connection = (Connection) DBUtil.getConnection();
                 preparedStatement = connection.prepareStatement(sql);
 
-                preparedStatement.setString(1, name);
+
+
+
+
+
+                preparedStatement.setString(1, numberunit);
                 preparedStatement.setString(2, last);
-                preparedStatement.setString(3, middle);
-                preparedStatement.setString(4, birth);
-                preparedStatement.setString(5, personalnumber);
-                preparedStatement.setString(6, militaryrank);
-                preparedStatement.setString(7, orderdate);
-                preparedStatement.setString(8, numberunit);
+                preparedStatement.setString(3, name);
+                preparedStatement.setString(4, middle);
+                preparedStatement.setString(5, birth);
+                preparedStatement.setString(6, personalnumber);
+                preparedStatement.setString(7, militaryrank);
+                preparedStatement.setString(8, nomrspiner);
+                preparedStatement.setString(9, nomrdate);
+
 
 
                 textArea.setText("USER ADDED");
@@ -288,14 +337,20 @@ public class Controller implements Initializable {
 
             tempUsername = user.getName();
 
-            first_name.setText(user.getName());
+            number_unit.setText(String.valueOf(user.getNumberunit()));
             last_name.setText(user.getLast());
+            first_name.setText(user.getName());
             middle_name.setText(user.getMiddle());
             date_birth.setValue(LocalDate.parse(user.getBirth(), formatter));
             personal_number.setText(user.getPersonalnumber());
             military_spiner.getEditor().setText(user.getMilitaryrank());
-            date_order.setValue(LocalDate.parse(user.getOrderdate(), formatter));
-            number_unit.setText(String.valueOf(user.getNumberunit()));
+
+            nomr_spiner.getEditor().setText(user.getNomrspiner());
+            nomr_date.setValue(LocalDate.parse(user.getNomrdate(), formatter));
+
+
+
+
 
 
             textArea.setText("YOU SELECT" + " " + user.getName());
@@ -315,19 +370,22 @@ public class Controller implements Initializable {
         try {
             User user = (User) tableUsers.getSelectionModel().getSelectedItem();
 
-            String sql = "delete from people.warrior where name=? and last=? and middle=? and birth=? and personalnumber=? and militaryrank=? and orderdate=? and numberunit=?";
+            String sql = "delete from people.warrior where numberunit=? and last=? and name=? and middle=? and birth=? and personalnumber=? and militaryrank=? and nomrspiner=? and nomrdate=?";
             Connection connection = (Connection) DBUtil.getConnection();
-
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getLast());
-            preparedStatement.setString(3, user.getMiddle());
-            preparedStatement.setDate(4, java.sql.Date.valueOf(date_birth.getValue()));
-            preparedStatement.setString(5, user.getPersonalnumber());
 
-            preparedStatement.setString(6, user.getMilitaryrank());
-            preparedStatement.setDate(7, java.sql.Date.valueOf(date_order.getValue()));
-            preparedStatement.setString(8, String.valueOf(user.getNumberunit()));
+
+
+            preparedStatement.setString(1, String.valueOf(user.getNumberunit()));
+            preparedStatement.setString(2, user.getLast());
+            preparedStatement.setString(3, user.getName());
+            preparedStatement.setString(4, user.getMiddle());
+            preparedStatement.setDate(5, java.sql.Date.valueOf(date_birth.getValue()));
+            preparedStatement.setString(6, user.getPersonalnumber());
+            preparedStatement.setString(7, user.getMilitaryrank());
+
+            preparedStatement.setString(8, user.getNomrspiner());
+            preparedStatement.setDate(9, java.sql.Date.valueOf(nomr_date.getValue()));
 
 
 
@@ -352,29 +410,36 @@ public class Controller implements Initializable {
     public void UpdateUser() {
 
 
-        String name = first_name.getText();
+        String numberunit = number_unit.getText();
         String last = last_name.getText();
+        String name = first_name.getText();
         String middle = middle_name.getText();
         String birth = String.valueOf(date_birth.getValue());
         String personalnumber = personal_number.getText();
         String militaryrank = military_spiner.getEditor().getText();
-        String orderdate = String.valueOf(date_order.getValue());
-        String numberunit = number_unit.getText();
+
+        String nomrspiner = nomr_spiner.getEditor().getText();
+        String nomrdate = String.valueOf(nomr_date.getValue());
 
 
-        String sql = "update people.warrior set name=?, last=?, middle=?, birth=?, personalNumber=?, militaryrank=?, orderdate=?, numberunit=? where name='" + tempUsername + "'";
+
+        String sql = "update people.warrior set numberunit=?, last=?, name=?, middle=?, birth=?, personalNumber=?, militaryrank=?, nomrspiner=?, nomrdate=? where name='" + tempUsername + "'";
 
 
-        if ((name.isEmpty()) |
+        if ((numberunit.isEmpty()) |
+                (numberunit.matches("^[0-9]{1,5}$") == false) |
                 (last.isEmpty()) |
+                (name.isEmpty()) |
                 (middle.isEmpty()) |
                 (birth.isEmpty()) |
                 (personalnumber.isEmpty()) |
                 (personalnumber.matches("^[А-Я]{1}[-]{1}[0-9]{6}$") == false) |
                 (militaryrank.isEmpty()) |
-                (orderdate.isEmpty()) |
-                (numberunit.isEmpty()) |
-                (numberunit.matches("^[0-9]{1,5}$") == false)) {
+                (nomrspiner.isEmpty()) |
+                (nomrdate.isEmpty()))
+
+
+        {
 
             textArea.setText("PLEASE FILL ALL FIELDS OR \n" +
                     "Rank must be [А-Я]{1}[-]{1}[0-9]{6} OR \n" +
@@ -387,20 +452,25 @@ public class Controller implements Initializable {
                 Connection connection = (Connection) DBUtil.getConnection();
                 preparedStatement = connection.prepareStatement(sql);
 
-                preparedStatement.setString(1, first_name.getText());
+
+                preparedStatement.setString(1, number_unit.getText());
                 preparedStatement.setString(2, last_name.getText());
-                preparedStatement.setString(3, middle_name.getText());
-                preparedStatement.setDate(4, java.sql.Date.valueOf(date_birth.getValue()));
-                preparedStatement.setString(5, personal_number.getText());
-                preparedStatement.setString(6, military_spiner.getEditor().getText());
-                preparedStatement.setDate(7, java.sql.Date.valueOf(date_order.getValue()));
-                preparedStatement.setString(8,number_unit.getText());
+                preparedStatement.setString(3, first_name.getText());
+                preparedStatement.setString(4, middle_name.getText());
+                preparedStatement.setDate(5, java.sql.Date.valueOf(date_birth.getValue()));
+                preparedStatement.setString(6, personal_number.getText());
+                preparedStatement.setString(7, military_spiner.getEditor().getText());
+
+                preparedStatement.setString(8, nomr_spiner.getEditor().getText());
+                preparedStatement.setDate(9, java.sql.Date.valueOf(nomr_date.getValue()));
 
 
                 preparedStatement.execute();
                 preparedStatement.close();
                 loaddate();
                 military_spiner.getEditor().setText("");
+                nomr_spiner.getEditor().setText("");
+
 
                 textArea.setText("USER" + " " + first_name.getText() + " " + "UPDATE");
             } catch (SQLException e) {
@@ -413,14 +483,19 @@ public class Controller implements Initializable {
     @FXML
     public void CreateUser() {
 
-        first_name.clear();
+
+        number_unit.clear();
         last_name.clear();
+        first_name.clear();
         middle_name.clear();
         date_birth.setValue(null);
         personal_number.clear();
         military_spiner.getEditor().setText("");
-        date_order.setValue(null);
-        number_unit.clear();
+
+        nomr_spiner.getEditor().setText("");
+        nomr_date.setValue(null);
+
+
 
         usersData.clear();
         add.setDisable(false);

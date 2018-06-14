@@ -16,16 +16,16 @@
     <children>
         <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="983.0" prefWidth="500.0" style="-fx-background-color: #66CDAA;">
             <children>
-                <TextField fx:id="first_name" layoutX="14.0" layoutY="25.0" />
-                <Label layoutX="173.0" layoutY="29.0" prefHeight="17.0" prefWidth="68.0" text="First_Name" />
+                <TextField fx:id="first_name" layoutX="14.0" layoutY="89.0" />
+                <Label layoutX="169.0" layoutY="93.0" prefHeight="17.0" prefWidth="68.0" text="First_Name" />
                 <TextField fx:id="last_name" layoutX="14.0" layoutY="55.0" />
-                <TextField fx:id="middle_name" layoutX="14.0" layoutY="88.0" />
-                <Label layoutX="173.0" layoutY="59.0" prefHeight="17.0" prefWidth="68.0" text="Last_Name" />
-                <Label layoutX="173.0" layoutY="92.0" prefHeight="17.0" prefWidth="79.0" text="Middle_Name" />
-                <Label layoutX="173.0" layoutY="125.0" prefHeight="17.0" prefWidth="79.0" text="Date_Birth" />
+                <TextField fx:id="middle_name" layoutX="14.0" layoutY="121.0" />
+                <Label layoutX="169.0" layoutY="59.0" prefHeight="17.0" prefWidth="68.0" text="Last_Name" />
+                <Label layoutX="173.0" layoutY="125.0" prefHeight="17.0" prefWidth="79.0" text="Middle_Name" />
+                <Label layoutX="173.0" layoutY="161.0" prefHeight="17.0" prefWidth="79.0" text="Date_Birth" />
 
-            <DatePicker fx:id="date_birth" layoutX="14.0" layoutY="121.0" prefHeight="25.0" prefWidth="149.0" />
-            <AnchorPane layoutX="305.0" layoutY="101.0" prefHeight="161.0" prefWidth="149.0" style="-fx-background-color: #F5FFFA;">
+            <DatePicker fx:id="date_birth" layoutX="14.0" layoutY="157.0" prefHeight="25.0" prefWidth="149.0" />
+            <AnchorPane layoutX="305.0" layoutY="101.0" prefHeight="161.0" prefWidth="149.0" style="-fx-background-color: #ccff99;">
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
@@ -36,26 +36,37 @@
                   <Button id="delete" fx:id="delete" layoutX="16.0" layoutY="108.0" mnemonicParsing="false" onAction="#deleteUser" prefHeight="25.0" prefWidth="114.0" text="DELETE" />
                </children></AnchorPane>
             <Button fx:id="create" layoutX="315.0" layoutY="18.0" mnemonicParsing="false" onAction="#CreateUser" prefHeight="49.0" prefWidth="128.0" text="CREATE_NEW_USER" />
-            <TextField fx:id="personal_number" layoutX="14.0" layoutY="157.0" />
-            <Label layoutX="173.0" layoutY="200.0" prefHeight="17.0" prefWidth="104.0" text="Military_Rank" />
-            <Label layoutX="173.0" layoutY="161.0" prefHeight="17.0" prefWidth="104.0" text="Personal_Number" />
-            <Spinner fx:id="military_spiner" layoutX="14.0" layoutY="196.0" />
-            <DatePicker fx:id="date_order" layoutX="14.0" layoutY="231.0" prefHeight="25.0" prefWidth="149.0" />
-            <Label layoutX="173.0" layoutY="235.0" prefHeight="17.0" prefWidth="79.0" text="Date_of_Order" />
-            <TextField fx:id="number_unit" layoutX="14.0" layoutY="270.0" />
-            <Label layoutX="173.0" layoutY="274.0" prefHeight="17.0" prefWidth="128.0" text="Number_Unit" />
+            <TextField fx:id="personal_number" layoutX="14.0" layoutY="196.0" />
+            <Label layoutX="173.0" layoutY="235.0" prefHeight="17.0" prefWidth="104.0" text="Military_Rank" />
+            <Label layoutX="173.0" layoutY="200.0" prefHeight="17.0" prefWidth="104.0" text="Personal_Number" />
+            <Spinner fx:id="military_spiner" layoutX="14.0" layoutY="231.0" />
+            <Label layoutX="186.0" layoutY="354.0" prefHeight="17.0" prefWidth="79.0" text="Date" />
+            <TextField fx:id="number_unit" layoutX="14.0" layoutY="17.0" />
+            <Label layoutX="173.0" layoutY="21.0" prefHeight="17.0" prefWidth="128.0" text="Number_Unit" />
+            <AnchorPane layoutX="14.0" layoutY="302.0" prefHeight="85.0" prefWidth="161.0" style="-fx-background-color: #ccff99;">
+               <children>
+                  <DatePicker fx:id="nomr_date" layoutX="6.0" layoutY="43.0" prefHeight="25.0" prefWidth="149.0" />
+                  <Spinner fx:id="nomr_spiner" layoutX="6.0" layoutY="14.0" />
+               </children>
+            </AnchorPane>
+            <Label layoutX="14.0" layoutY="262.0" prefHeight="47.0" prefWidth="244.0" text="Number of order for military rank(NOMR)" />
+            <Label layoutX="185.0" layoutY="318.0" prefHeight="17.0" prefWidth="104.0" text="Bukvi" />
             </children>
         </AnchorPane>
-        <TableView fx:id="tableUsers" layoutX="528.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showOnClick" prefHeight="878.0" prefWidth="454.0" AnchorPane.bottomAnchor="109.0" AnchorPane.leftAnchor="528.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="13.0">
+        <TableView fx:id="tableUsers" layoutX="512.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showOnClick" prefHeight="878.0" prefWidth="470.0" AnchorPane.bottomAnchor="109.0" AnchorPane.leftAnchor="512.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="13.0">
             <columns>
+            <TableColumn fx:id="numberUnitColumn" prefWidth="93.0" text="Number_Unit" />
+                <TableColumn fx:id="lastColumn" minWidth="0.0" prefWidth="58.0" text="Last_Name" />
                 <TableColumn fx:id="nameColumn" prefWidth="57.0" text="First_Name" />
-                <TableColumn fx:id="lastColumn" minWidth="0.0" prefWidth="48.0" text="Last_Name" />
-                <TableColumn fx:id="middleColumn" minWidth="0.0" prefWidth="43.0" text="Middle_Name" />
-                <TableColumn fx:id="DateColumn" minWidth="4.0" prefWidth="56.0" text="Date of Birth" />
-            <TableColumn fx:id="personalNumberColumn" minWidth="0.0" prefWidth="66.0" text="Personal_Number" />
-            <TableColumn fx:id="militaryRankColumn" minWidth="0.0" prefWidth="64.0" text="Military_Rank" />
-            <TableColumn fx:id="dateOrderColumn" maxWidth="140.0" minWidth="0.0" prefWidth="59.0" text="Date_of_Order" />
-            <TableColumn fx:id="numberUnitColumn" prefWidth="26.0" text="Number_Unit" />
+                <TableColumn fx:id="middleColumn" minWidth="0.0" prefWidth="75.0" text="Middle_Name" />
+                <TableColumn fx:id="DateColumn" minWidth="4.0" prefWidth="61.0" text="Date of Birth" />
+            <TableColumn fx:id="personalNumberColumn" minWidth="0.0" prefWidth="61.0" text="Personal_Number" />
+            <TableColumn fx:id="militaryRankColumn" minWidth="0.0" prefWidth="45.0" text="Military_Rank" />
+            <TableColumn fx:id="nomrColumn" maxWidth="177.0" minWidth="0.0" prefWidth="90.0" text="NOMR">
+               <columns>
+                  <TableColumn fx:id="prikazNomrColumn" prefWidth="75.0" text="Prikaz ot" />
+                  <TableColumn fx:id="dateNomrColumn" prefWidth="75.0" text="Date" />
+               </columns></TableColumn>
             </columns>
         </TableView>
           <TextArea id="textArea" fx:id="textArea" layoutX="527.0" layoutY="919.0" prefHeight="75.0" prefWidth="454.0" />

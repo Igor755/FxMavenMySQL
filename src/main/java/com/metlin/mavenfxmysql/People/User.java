@@ -9,43 +9,43 @@ import java.util.Date;
 public class User {
 
 
-    private String name;
+    private int numberunit;
     private String last;
+    private String name;
     private String middle;
     private String birth;
     private String personalnumber;
     private String militaryrank;
-    private String orderdate;
-    private int numberunit;
+    private String nomrspiner;
+    private String nomrdate;
 
 
 
 
-    public User(String name, String last, String middle, String birth, String personalnumber, String militaryrank, String orderdate, Integer numberunit) {
 
-        this.name = name;
+    public User( Integer numberunit, String last, String name, String middle, String birth, String personalnumber, String militaryrank, String nomrspiner, String nomrdate) {
+
+        this.numberunit = numberunit;
         this.last = last;
+        this.name = name;
         this.middle = middle;
         this.birth = birth;
         this.personalnumber = personalnumber;
         this.militaryrank = militaryrank;
-        this.orderdate = orderdate;
-        this.numberunit = numberunit;
+        this.nomrspiner = nomrspiner;
+        this.nomrdate = nomrdate;
+
     }
     public User(){
 
     }
 
-
-
-
-
-    public String getName() {
-        return name;
+    public int getNumberunit() {
+        return numberunit;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNumberunit(int numberunit) {
+        this.numberunit = numberunit;
     }
 
     public String getLast() {
@@ -54,6 +54,14 @@ public class User {
 
     public void setLast(String last) {
         this.last = last;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getMiddle() {
@@ -88,19 +96,19 @@ public class User {
         this.militaryrank = militaryrank;
     }
 
-    public String getOrderdate() {
-        return orderdate;
+    public String getNomrspiner() {
+        return nomrspiner;
     }
 
-    public void setOrderdate(String orderdate) {
-        this.orderdate = orderdate;
+    public void setNomrspiner(String nomrspiner) {
+        this.nomrspiner = nomrspiner;
     }
 
-    public int getNumberunit() {
-        return numberunit;
+    public String getNomrdate() {
+        return nomrdate;
     }
 
-    public void setNumberunit(int numberunit) {
-        this.numberunit = numberunit;
+    public void setNomrdate(String nomrdate) {
+        this.nomrdate = nomrdate;
     }
 }
