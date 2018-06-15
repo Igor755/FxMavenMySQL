@@ -18,12 +18,13 @@ public class User {
     private String militaryrank;
     private String nomrspiner;
     private String nomrdate;
+    private String militarypost;
 
 
 
 
 
-    public User( Integer numberunit, String last, String name, String middle, String birth, String personalnumber, String militaryrank, String nomrspiner, String nomrdate) {
+    public User( Integer numberunit, String last, String name, String middle, String birth, String personalnumber, String militaryrank, String nomrspiner, String nomrdate, String militarypost) {
 
         this.numberunit = numberunit;
         this.last = last;
@@ -34,6 +35,7 @@ public class User {
         this.militaryrank = militaryrank;
         this.nomrspiner = nomrspiner;
         this.nomrdate = nomrdate;
+        this.militarypost = militarypost;
 
     }
     public User(){
@@ -110,5 +112,13 @@ public class User {
 
     public void setNomrdate(String nomrdate) {
         this.nomrdate = nomrdate;
+    }
+
+    public String getMilitarypost() {
+        return militarypost;
+    }
+
+    public void setMilitarypost(String militarypost) {
+        this.militarypost = militarypost;
     }
 }

@@ -66,7 +66,8 @@ public class DBUtil {
                 "personalnumber varchar(8) NOT NULL, " +
                 "militaryrank varchar(30) NOT NULL, " +
                 "nomrspiner varchar(20) NOT NULL, " +
-                "nomrdate date NOT NULL)";
+                "nomrdate date NOT NULL, " +
+                "militarypost varchar(20) NOT NULL)";
 
 
         statement = connection.createStatement();
