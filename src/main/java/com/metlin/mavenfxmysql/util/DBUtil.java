@@ -67,6 +67,7 @@ public class DBUtil {
                 "militaryrank varchar(30) NOT NULL, " +
                 "nomrspiner varchar(20) NOT NULL, " +
                 "nomrdate date NOT NULL, " +
+                "nomrnumber INT NOT NULL, " +
                 "militarypost varchar(20) NOT NULL)";
 
 

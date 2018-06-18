@@ -71,6 +71,8 @@ public class Controller implements Initializable {
     private Spinner<String> nomr_spiner = new Spinner<String>();
     @FXML
     private DatePicker nomr_date;
+    @FXML
+    private TextField nomr_number;
 
 
 
@@ -107,6 +109,8 @@ public class Controller implements Initializable {
     private TableColumn<User, String> prikazNomrColumn;
     @FXML
     private TableColumn<User, Date> dateNomrColumn;
+    @FXML
+    private TableColumn<User, Integer> numberNomrColumn;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,6 +160,7 @@ public class Controller implements Initializable {
 
         prikazNomrColumn.setCellValueFactory(new PropertyValueFactory<User, String>("nomrspiner"));
         dateNomrColumn.setCellValueFactory(new PropertyValueFactory<User, Date>("nomrdate"));
+        numberNomrColumn.setCellValueFactory(new PropertyValueFactory<User,Integer>("nomrnumber"));
 
         militaryPostColumn.setCellValueFactory(new PropertyValueFactory<User, String>("militarypost"));
 
@@ -205,8 +210,10 @@ public class Controller implements Initializable {
 
 
 
+
             nomr_spiner.getEditor().setText("");
             nomr_date.setValue(null);
+            nomr_number.clear();
 
             military_post.clear();
 
@@ -232,6 +239,7 @@ public class Controller implements Initializable {
                         resultSet.getString("militaryrank"),
                         resultSet.getString("nomrspiner"),
                         dateord = dateFormat.format(resultSet.getDate("nomrdate")),
+                        resultSet.getInt("nomrnumber"),
                         resultSet.getString("militarypost")));//java sql date));
 
             }
@@ -269,11 +277,12 @@ public class Controller implements Initializable {
 
         String nomrspiner = nomr_spiner.getEditor().getText();
         String nomrdate = String.valueOf(nomr_date.getValue());
+        String nomrnumber = nomr_number.getText();
 
         String militarypost = military_post.getText();
 
 
-        String sql = "INSERT into people.warrior (numberunit,last,name,middle,birth,personalnumber,militaryrank,nomrspiner,nomrdate,militarypost) Values (?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT into people.warrior (numberunit,last,name,middle,birth,personalnumber,militaryrank,nomrspiner,nomrdate,nomrnumber,militarypost) Values (?,?,?,?,?,?,?,?,?,?,?)";
 
         preparedStatement = null;
 
@@ -288,6 +297,7 @@ public class Controller implements Initializable {
                 (militaryrank.isEmpty()) |
                 (nomrspiner.isEmpty()) |
                 (nomrdate.isEmpty()) |
+                (nomrnumber.isEmpty()) |
                 (militarypost.isEmpty()))
 
 
@@ -320,7 +330,8 @@ public class Controller implements Initializable {
                 preparedStatement.setString(7, militaryrank);
                 preparedStatement.setString(8, nomrspiner);
                 preparedStatement.setString(9, nomrdate);
-                preparedStatement.setString(10,militarypost);
+                preparedStatement.setString(10,nomrnumber);
+                preparedStatement.setString(11,militarypost);
 
 
 
@@ -372,6 +383,7 @@ public class Controller implements Initializable {
 
             nomr_spiner.getEditor().setText(user.getNomrspiner());
             nomr_date.setValue(LocalDate.parse(user.getNomrdate(), formatter));
+            nomr_number.setText(String.valueOf(user.getNomrnumber()));
 
             military_post.setText(user.getMilitarypost());
 
@@ -399,7 +411,7 @@ public class Controller implements Initializable {
         try {
             User user = (User) tableUsers.getSelectionModel().getSelectedItem();
 
-            String sql = "delete from people.warrior where numberunit=? and last=? and name=? and middle=? and birth=? and personalnumber=? and militaryrank=? and nomrspiner=? and nomrdate=? and militarypost=?";
+            String sql = "delete from people.warrior where numberunit=? and last=? and name=? and middle=? and birth=? and personalnumber=? and militaryrank=? and nomrspiner=? and nomrdate=? and nomrnumber=? and militarypost=?";
             Connection connection = (Connection) DBUtil.getConnection();
             preparedStatement = connection.prepareStatement(sql);
 
@@ -416,8 +428,9 @@ public class Controller implements Initializable {
 
             preparedStatement.setString(8, user.getNomrspiner());
             preparedStatement.setDate(9, java.sql.Date.valueOf(nomr_date.getValue()));
+            preparedStatement.setString(10, String.valueOf(user.getNomrnumber()));
 
-            preparedStatement.setString(10,user.getMilitarypost());
+            preparedStatement.setString(11,user.getMilitarypost());
 
 
 
@@ -455,12 +468,13 @@ public class Controller implements Initializable {
 
         String nomrspiner = nomr_spiner.getEditor().getText();
         String nomrdate = String.valueOf(nomr_date.getValue());
+        String nomrnumber = nomr_number.getText();
 
         String militarypost = military_post.getText();
 
 
 
-        String sql = "update people.warrior set numberunit=?, last=?, name=?, middle=?, birth=?, personalNumber=?, militaryrank=?, nomrspiner=?, nomrdate=?, militarypost=? where name='" + tempUsername + "'";
+        String sql = "update people.warrior set numberunit=?, last=?, name=?, middle=?, birth=?, personalNumber=?, militaryrank=?, nomrspiner=?, nomrdate=?, nomrnumber=?, militarypost=? where name='" + tempUsername + "'";
 
 
         if ((numberunit.isEmpty()) |
@@ -474,6 +488,7 @@ public class Controller implements Initializable {
                 (militaryrank.isEmpty()) |
                 (nomrspiner.isEmpty()) |
                 (nomrdate.isEmpty()) |
+                (nomrnumber.isEmpty()) |
                 (militarypost.isEmpty()))
 
 
@@ -501,8 +516,9 @@ public class Controller implements Initializable {
 
                 preparedStatement.setString(8, nomr_spiner.getEditor().getText());
                 preparedStatement.setDate(9, java.sql.Date.valueOf(nomr_date.getValue()));
+                preparedStatement.setString(10, nomr_number.getText());
 
-                preparedStatement.setString(10, military_post.getText());
+                preparedStatement.setString(11, military_post.getText());
 
 
                 preparedStatement.execute();
@@ -536,6 +552,7 @@ public class Controller implements Initializable {
 
         nomr_spiner.getEditor().setText("");
         nomr_date.setValue(null);
+        nomr_number.clear();
 
         military_post.clear();
 
