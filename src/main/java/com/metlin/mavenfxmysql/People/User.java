@@ -18,7 +18,7 @@ public class User {
     private String militaryrank;
     private String nomrspiner;
     private String nomrdate;
-    private int nomrnumber;
+    private String nomrnumber;
     private String militarypost;
 
 
@@ -28,7 +28,7 @@ public class User {
     public User( Integer numberunit, String last,
                  String name, String middle, String birth,
                  String personalnumber, String militaryrank,
-                 String nomrspiner, String nomrdate, Integer nomrnumber, String militarypost) {
+                 String nomrspiner, String nomrdate, String nomrnumber, String militarypost) {
 
         this.numberunit = numberunit;
         this.last = last;
@@ -119,11 +119,11 @@ public class User {
         this.nomrdate = nomrdate;
     }
 
-    public int getNomrnumber() {
+    public String getNomrnumber() {
         return nomrnumber;
     }
 
-    public void setNomrnumber(int nomrnumber) {
+    public void setNomrnumber(String nomrnumber) {
         this.nomrnumber = nomrnumber;
     }
 

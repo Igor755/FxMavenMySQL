@@ -63,8 +63,6 @@ public class Controller implements Initializable {
     private TextField military_post;
 
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @FXML
@@ -73,7 +71,6 @@ public class Controller implements Initializable {
     private DatePicker nomr_date;
     @FXML
     private TextField nomr_number;
-
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,7 +99,7 @@ public class Controller implements Initializable {
     @FXML
     private TableColumn<User, String> militaryPostColumn;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @FXML
     private TableColumn<User, String> nomrColumn;
     @FXML
@@ -110,7 +107,7 @@ public class Controller implements Initializable {
     @FXML
     private TableColumn<User, Date> dateNomrColumn;
     @FXML
-    private TableColumn<User, Integer> numberNomrColumn;
+    private TableColumn<User, String> numberNomrColumn;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -157,14 +154,11 @@ public class Controller implements Initializable {
         militaryRankColumn.setCellValueFactory(new PropertyValueFactory<User, String>("militaryrank"));
 
 
-
         prikazNomrColumn.setCellValueFactory(new PropertyValueFactory<User, String>("nomrspiner"));
         dateNomrColumn.setCellValueFactory(new PropertyValueFactory<User, Date>("nomrdate"));
-        numberNomrColumn.setCellValueFactory(new PropertyValueFactory<User,Integer>("nomrnumber"));
+        numberNomrColumn.setCellValueFactory(new PropertyValueFactory<User, String>("nomrnumber"));
 
         militaryPostColumn.setCellValueFactory(new PropertyValueFactory<User, String>("militarypost"));
-
-
 
 
         Tooltip tooltip_personal_number = new Tooltip("\n" +
@@ -208,17 +202,11 @@ public class Controller implements Initializable {
             military_spiner.getEditor().setText("");
 
 
-
-
-
             nomr_spiner.getEditor().setText("");
             nomr_date.setValue(null);
             nomr_number.clear();
 
             military_post.clear();
-
-
-
 
 
             usersData.clear();
@@ -239,11 +227,10 @@ public class Controller implements Initializable {
                         resultSet.getString("militaryrank"),
                         resultSet.getString("nomrspiner"),
                         dateord = dateFormat.format(resultSet.getDate("nomrdate")),
-                        resultSet.getInt("nomrnumber"),
+                        resultSet.getString("nomrnumber"),
                         resultSet.getString("militarypost")));//java sql date));
 
             }
-
 
 
             tableUsers.setItems(usersData);
@@ -274,7 +261,6 @@ public class Controller implements Initializable {
         String militaryrank = military_spiner.getEditor().getText();
 
 
-
         String nomrspiner = nomr_spiner.getEditor().getText();
         String nomrdate = String.valueOf(nomr_date.getValue());
         String nomrnumber = nomr_number.getText();
@@ -298,6 +284,7 @@ public class Controller implements Initializable {
                 (nomrspiner.isEmpty()) |
                 (nomrdate.isEmpty()) |
                 (nomrnumber.isEmpty()) |
+                (nomrnumber.matches("^[0-9]{1,4}$") == false) |
                 (militarypost.isEmpty()))
 
 
@@ -305,8 +292,9 @@ public class Controller implements Initializable {
 
 
             textArea.setText("PLEASE FILL ALL FIELDS OR \n" +
+                    "Numberunit must be [0-9]{1,5} \n" +
                     "Rank must be [А-Я]{1}[-]{1}[0-9]{6} OR \n" +
-                    "Numberunit must be [0-9]{1,5}");
+                    "Nomrnumber must be [0-9]{1,4}");
 
         } else {
 
@@ -315,10 +303,6 @@ public class Controller implements Initializable {
 
                 Connection connection = (Connection) DBUtil.getConnection();
                 preparedStatement = connection.prepareStatement(sql);
-
-
-
-
 
 
                 preparedStatement.setString(1, numberunit);
@@ -330,9 +314,8 @@ public class Controller implements Initializable {
                 preparedStatement.setString(7, militaryrank);
                 preparedStatement.setString(8, nomrspiner);
                 preparedStatement.setString(9, nomrdate);
-                preparedStatement.setString(10,nomrnumber);
-                preparedStatement.setString(11,militarypost);
-
+                preparedStatement.setString(10, nomrnumber);
+                preparedStatement.setString(11, militarypost);
 
 
                 textArea.setText("USER ADDED");
@@ -383,13 +366,9 @@ public class Controller implements Initializable {
 
             nomr_spiner.getEditor().setText(user.getNomrspiner());
             nomr_date.setValue(LocalDate.parse(user.getNomrdate(), formatter));
-            nomr_number.setText(String.valueOf(user.getNomrnumber()));
+            nomr_number.setText(user.getNomrnumber());
 
             military_post.setText(user.getMilitarypost());
-
-
-
-
 
 
             textArea.setText("YOU SELECT" + " " + user.getName());
@@ -416,7 +395,6 @@ public class Controller implements Initializable {
             preparedStatement = connection.prepareStatement(sql);
 
 
-
             preparedStatement.setString(1, String.valueOf(user.getNumberunit()));
             preparedStatement.setString(2, user.getLast());
             preparedStatement.setString(3, user.getName());
@@ -428,10 +406,9 @@ public class Controller implements Initializable {
 
             preparedStatement.setString(8, user.getNomrspiner());
             preparedStatement.setDate(9, java.sql.Date.valueOf(nomr_date.getValue()));
-            preparedStatement.setString(10, String.valueOf(user.getNomrnumber()));
+            preparedStatement.setString(10, user.getNomrnumber());
 
-            preparedStatement.setString(11,user.getMilitarypost());
-
+            preparedStatement.setString(11, user.getMilitarypost());
 
 
             preparedStatement.executeUpdate();
@@ -473,7 +450,6 @@ public class Controller implements Initializable {
         String militarypost = military_post.getText();
 
 
-
         String sql = "update people.warrior set numberunit=?, last=?, name=?, middle=?, birth=?, personalNumber=?, militaryrank=?, nomrspiner=?, nomrdate=?, nomrnumber=?, militarypost=? where name='" + tempUsername + "'";
 
 
@@ -489,14 +465,16 @@ public class Controller implements Initializable {
                 (nomrspiner.isEmpty()) |
                 (nomrdate.isEmpty()) |
                 (nomrnumber.isEmpty()) |
+                (nomrnumber.matches("^[0-9]{1,4}$") == false) |
                 (militarypost.isEmpty()))
 
 
         {
 
             textArea.setText("PLEASE FILL ALL FIELDS OR \n" +
+                    "Numberunit must be [0-9]{1,5} \n" +
                     "Rank must be [А-Я]{1}[-]{1}[0-9]{6} OR \n" +
-                    "Numberunit must be [0-9]{1,5}");
+                    "Nomrnumber must be [0-9]{1,4}");
 
         } else {
 
@@ -555,7 +533,6 @@ public class Controller implements Initializable {
         nomr_number.clear();
 
         military_post.clear();
-
 
 
         usersData.clear();
