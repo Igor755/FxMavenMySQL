@@ -21,6 +21,10 @@ public class User {
     private String nomrnumber;
     private String militarypost;
 
+    private String nompspiner;
+    private String nompdate;
+    private String nompnumber;
+
 
 
 
@@ -28,7 +32,8 @@ public class User {
     public User( Integer numberunit, String last,
                  String name, String middle, String birth,
                  String personalnumber, String militaryrank,
-                 String nomrspiner, String nomrdate, String nomrnumber, String militarypost) {
+                 String nomrspiner, String nomrdate, String nomrnumber, String militarypost,
+                 String nompspiner, String nompdate, String nompnumber) {
 
         this.numberunit = numberunit;
         this.last = last;
@@ -41,6 +46,10 @@ public class User {
         this.nomrdate = nomrdate;
         this.nomrnumber = nomrnumber;
         this.militarypost = militarypost;
+
+        this.nompspiner = nompspiner;
+        this.nompdate = nompdate;
+        this.nompnumber = nompnumber;
 
     }
     public User(){
@@ -133,5 +142,29 @@ public class User {
 
     public void setMilitarypost(String militarypost) {
         this.militarypost = militarypost;
+    }
+
+    public String getNompspiner() {
+        return nompspiner;
+    }
+
+    public void setNompspiner(String nompspiner) {
+        this.nompspiner = nompspiner;
+    }
+
+    public String getNompdate() {
+        return nompdate;
+    }
+
+    public void setNompdate(String nompdate) {
+        this.nompdate = nompdate;
+    }
+
+    public String getNompnumber() {
+        return nompnumber;
+    }
+
+    public void setNompnumber(String nompnumber) {
+        this.nompnumber = nompnumber;
     }
 }

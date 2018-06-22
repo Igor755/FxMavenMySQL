@@ -70,14 +70,14 @@
                   <Label layoutX="180.0" layoutY="23.0" text="Subdivision" />
                   <Label layoutX="180.0" layoutY="56.0" text="Date" />
                   <Label layoutX="180.0" layoutY="88.0" text="Number №" />
-                  <TextField layoutX="14.0" layoutY="84.0" />
-                  <Spinner layoutX="14.0" layoutY="19.0" />
-                  <DatePicker layoutX="14.0" layoutY="52.0" prefHeight="25.0" prefWidth="149.0" />
+                  <TextField fx:id="nomp_number" layoutX="14.0" layoutY="84.0" />
+                  <Spinner fx:id="nomp_spiner" layoutX="14.0" layoutY="19.0" />
+                  <DatePicker fx:id="nomp_date" layoutX="14.0" layoutY="52.0" prefHeight="25.0" prefWidth="149.0" />
                </children></AnchorPane>
             <Label layoutX="42.0" layoutY="587.0" text="Number of order for military post(NOMP)" />
             </children>
         </AnchorPane>
-        <TableView fx:id="tableUsers" layoutX="514.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showOnClick" prefHeight="878.0" prefWidth="468.0" AnchorPane.bottomAnchor="109.0" AnchorPane.leftAnchor="514.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="13.0">
+        <TableView fx:id="tableUsers" layoutX="505.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showOnClick" prefHeight="878.0" prefWidth="477.0" AnchorPane.bottomAnchor="109.0" AnchorPane.leftAnchor="505.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="13.0">
             <columns>
             <TableColumn fx:id="numberUnitColumn" prefWidth="81.0" text="Number_Unit" />
                 <TableColumn fx:id="lastColumn" minWidth="0.0" prefWidth="70.0" text="Last_Name" />
@@ -95,9 +95,9 @@
             <TableColumn fx:id="militaryPostColumn" prefWidth="75.0" text="Military_post" />
             <TableColumn prefWidth="176.0" style="-fx-background-color: #66CDAA;" text="NOMP">
                <columns>
-                  <TableColumn prefWidth="75.0" text="Prikaz" />
-                  <TableColumn prefWidth="75.0" text="OT Date" />
-                  <TableColumn prefWidth="75.0" text="Number №" />
+                  <TableColumn fx:id="prikazNompColumn" prefWidth="75.0" text="Prikaz" />
+                  <TableColumn fx:id="dateNompColumn" prefWidth="75.0" text="OT Date" />
+                  <TableColumn fx:id="numberNompColumn" prefWidth="75.0" text="Number №" />
                </columns>
             </TableColumn>
             </columns>

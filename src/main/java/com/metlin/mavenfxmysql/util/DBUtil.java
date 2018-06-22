@@ -68,7 +68,10 @@ public class DBUtil {
                 "nomrspiner varchar(20) NOT NULL, " +
                 "nomrdate date NOT NULL, " +
                 "nomrnumber varchar(4) NOT NULL, " +
-                "militarypost varchar(20) NOT NULL)";
+                "militarypost varchar(20) NOT NULL, " +
+                "nompspiner varchar(20) NOT NULL, " +
+                "nompdate date NOT NULL, " +
+                "nompnumber varchar(4) NOT NULL)";
 
 
         statement = connection.createStatement();
